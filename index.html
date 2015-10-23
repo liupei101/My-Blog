@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html ng-app="app">
+    <head>
+    	<meta charset="utf-8">
+    	<title>OpenView</title>
+    	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script src="http://apps.bdimg.com/libs/angular.js/1.3.9/angular.min.js"></script>
+        <script src="/vendor/angular-route.min.js"></script>
+        <script src="/vendor/bootstrap-ui.min.js"> </script>
+        <script src="/vendor/marked.min.js"></script>
+        <script src="/scripts/main.js"></script>
+    </head>
+    <body>
+    	<nav class="navbar navbar-default">
+            <div class="container-fluid" ng-controller="site">
+                <div class="navbar-header navbar-left">
+                    <a class="navbar-brand" href="/#/">OpenView</a>
+                    <ul class="nav navbar-nav">
+                       
+                    </ul>
+                </div>
+                <div class="navbar-header navbar-right">
+                    <ul ng-if="login" class="nav navbar-nav">
+                        <li><a href="{{linkpage}}">欢迎 , {{userName}} </a></li>
+                        <li><a href="javascript:" ng-click="signOut()">登出</a></li>
+                    </ul>
+                    <div ng-if="!login" ng-controller="userSignIn">
+                        <form class="navbar-form" onsubmit="return false;">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="User Name" ng-model="userName">
+                                <input type="password" class="form-control" placeholder="Password" ng-model="password">
+                                <button type="submit" class="btn btn-sm btn-success" ng-click="signIn()">登录</button>
+                                <button type="submit" class="btn btn-sm btn-primary" ng-click="register()">注册</button>
+                                <a href="/#/views/user" class="btn btn-sm btn-primary" >用户</a>
+                                <a href="/#/views/admin" class="btn btn-sm btn-primary" >管理员</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container ng-scope" ng-view>
+        </div>
+    </body>
+</html>
