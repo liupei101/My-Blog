@@ -69,7 +69,7 @@
             controller: 'usercourse'
         }).
         when("/views/setting", {
-            templateUrl: '/views/setting.html',
+            templateUrl: '/views/usersetting.html',
             controller: 'usersetting'
         }).
         otherwise({
