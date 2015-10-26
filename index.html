@@ -31,15 +31,38 @@
                                 <input type="password" class="form-control" placeholder="Password" ng-model="password">
                                 <button type="submit" class="btn btn-sm btn-success" ng-click="signIn()">登录</button>
                                 <button type="submit" class="btn btn-sm btn-primary" ng-click="register()">注册</button>
-                                <a href="/#/views/user" class="btn btn-sm btn-primary" >用户</a>
-                                <a href="/#/views/admin" class="btn btn-sm btn-primary" >管理员</a>
+                                <a href="/#/views/user" class="btn btn-sm btn-primary" >我的主页</a>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </nav>
-        <div class="container ng-scope" ng-view>
+        <div class="container-fluid">
+        <div class="col-md-1" ng-if="login||DEBUG">
+            <ul class="nav nav-stacked">
+                <li role="presetation">
+                    <a href="/#/views/config"><img src="images/face/0.jpg" width="100%" alt="头像" class="img-circle"></a>
+                </li>
+                <li role="presetation">
+                    <a href="/#/views/info"><p class="text-center">信息</p></a>
+                </li>
+                <li role="presetation">
+                    <a href="/#/views/blog"><p class="text-center">杂记</p></a>
+                </li>
+                <li role="presetation">
+                    <a href="/#/views/course"><p class="text-center">课程</p></a>
+                </li>
+                <li role="presetation">
+                    <a href="/#/views/setting"><p class="text-center">设置</p></a>
+                </li>
+            </ul>
         </div>
+        <div class="col-md-11">
+            <div class="ng-scope" ng-view>
+
+            </div>
+        </div>
+    </div>
     </body>
 </html>

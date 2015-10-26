@@ -52,24 +52,64 @@
             templateUrl: '/views/index.html',
             controller: 'config'
         }).
-        when("/views/user", {
-            templateUrl: '/views/user.html',
-            controller: 'user'
+        when("/views/config", {
+            templateUrl: '/views/userconfig.html',
+            controller: 'userconfig'
         }).
-        when("/views/admin", {
-            templateUrl: '/views/admin.html',
-            controller: 'admin'
+        when("/views/info", {
+            templateUrl: '/views/userinfo.html',
+            controller: 'userinfo'
         }).
-        when("/views/admin/:userid" , {
-            templateUrl: '/views/usermodify.html',
-            controller: 'modify'
+        when("/views/blog", {
+            templateUrl: '/views/userblog.html',
+            controller: 'userblog'
         }).
-        when("/views/:file" , {
-            templateUrl: '/views/show.html',
-            controller: 'show'
+        when("/views/course", {
+            templateUrl: '/views/usercourse.html',
+            controller: 'usercourse'
+        }).
+        when("/views/setting", {
+            templateUrl: '/views/setting.html',
+            controller: 'usersetting'
         }).
         otherwise({
             redirectTo: '/views/404'
         });
     }]);
+    app.run(['$rootScope', function($rootScope) {
+        $rootScope.DEBUG = 1;
+        $rootScope.login = 0;
+    }]);
+    app.controller("site", ['$scope', '$rootScope', function($scope, $rootScope) {
+        //$scope.login = 0;
+
+    }]);
+
+    app.controller("userSignIn", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+        $scope.userName = '';
+        $scope.password = '';
+        $scope.signIn = function () {
+            $http({
+                url: '/api/user/login',
+                method: 'post',
+                data: {
+                    userName: $scope.userName,
+                    password: $scope.password
+                }
+            }).success(function (msg){
+                if(msg['code'] !== '0000') {
+                    alert(msg['errorMsg']);
+                }
+                $rootScope.$broadcast('refreshData');
+                $rootScope.$broadcast('updateUserData');
+            }).error(function () {
+                alert("Network Error!");
+            });
+        };
+    }]);
+
+    app.controller("config", ['$scope', function($scope) {
+        
+    }]);
+
 })()
