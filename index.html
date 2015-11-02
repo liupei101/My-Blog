@@ -39,31 +39,8 @@
                 </div>
             </div>
         </nav>
-        <div class="container-fluid">
-        <div class="col-md-1" ng-if="login||DEBUG">
-            <ul class="nav nav-stacked">
-                <li role="presetation">
-                    <a href="/#/views/config"><p class="text-center"><img src="images/face/0.jpg" width="45px" alt="头像" class="img-circle"></p></a>
-                </li>
-                <li role="presetation">
-                    <a href="/#/views/info"><p class="text-center">信息</p></a>
-                </li>
-                <li role="presetation">
-                    <a href="/#/views/blog"><p class="text-center">杂记</p></a>
-                </li>
-                <li role="presetation">
-                    <a href="/#/views/course"><p class="text-center">课程</p></a>
-                </li>
-                <li role="presetation">
-                    <a href="/#/views/setting"><p class="text-center">设置</p></a>
-                </li>
-            </ul>
+        <div class="container ng-scope" ng-view>
+            
         </div>
-        <div class="col-md-11">
-            <div class="ng-scope" ng-view>
-
-            </div>
-        </div>
-    </div>
     </body>
 </html>
