@@ -45,6 +45,13 @@
         };
     });
 
+    app.directive('usernav', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/usernav.html',
+            replace: true
+        };
+    });
     app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         //$locationProvider.html5Mode(true);
         $routeProvider.
@@ -76,15 +83,18 @@
             redirectTo: '/views/404'
         });
     }]);
+
     app.run(['$rootScope', function($rootScope) {
         $rootScope.DEBUG = 1;
-        $rootScope.login = 0;
+        $rootScope.login = 1;
     }]);
-    app.controller("site", ['$scope', '$rootScope', function($scope, $rootScope) {
-        $scope.login = 0;
+
+    app.controller("site", ['$scope', '$rootScope', '$modal', function($scope, $rootScope, $modal) {
+        // $scope.login = 0;
         $scope.page = "config";
         
-        $scope.signOut = function () {
+        $scope.logOut = function () {
+            $rootScope.login = !$rootScope.login;
             $http.get('/api/user/logout').success(function (msg) {
                 if(msg['code'] === '0000') {
                     $rootScope.$broadcast('refreshData');
@@ -92,17 +102,15 @@
             });
         }
         $scope.signIn = function () {
-            // alert("fuck");
             $modal.open({
                 templateUrl: '/views/login.html',
-                controller: 'userSignIn',
-                size: 'lg'
+                controller: 'userSignIn'
             });
         }
         
     }]);
 
-    app.controller("userSignIn", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$modalInstance', function($scope,$http,$rootScope,$modalInstance) {
         $scope.userName = '';
         $scope.password = '';
         $scope.signIn = function () {
@@ -123,10 +131,28 @@
                 alert("Network Error!");
             });
         };
+        $scope.close = function () {
+            $modalInstance.close();
+        }
     }]);
 
-    app.controller("config", ['$scope', function($scope) {
+    app.controller("config", ['$scope', '$rootScope', '$http', function($scope,$rootScope,$http) {
         
     }]);
 
+    app.controller("userconfig", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+        $scope.selectPage = 'home';
+    }]);
+
+    app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+        $scope.selectPage = 'blog';
+    }]);
+
+    app.controller("usercourse", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+        $scope.selectPage = 'course';
+    }]);
+
+    app.controller("usersetting", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+        $scope.selectPage = 'setting';
+    }]);
 })()
