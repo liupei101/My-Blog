@@ -56,10 +56,6 @@
             templateUrl: '/views/userconfig.html',
             controller: 'userconfig'
         }).
-        when("/views/info", {
-            templateUrl: '/views/userinfo.html',
-            controller: 'userinfo'
-        }).
         when("/views/blog", {
             templateUrl: '/views/userblog.html',
             controller: 'userblog'
@@ -67,6 +63,10 @@
         when("/views/course", {
             templateUrl: '/views/usercourse.html',
             controller: 'usercourse'
+        }).
+        when("/views/useredit/:type", {
+            templateUrl: '/views/useredit.html',
+            controller: 'useredit'
         }).
         when("/views/setting", {
             templateUrl: '/views/usersetting.html',
@@ -81,8 +81,25 @@
         $rootScope.login = 0;
     }]);
     app.controller("site", ['$scope', '$rootScope', function($scope, $rootScope) {
-        //$scope.login = 0;
-
+        $scope.login = 0;
+        $scope.page = "config";
+        
+        $scope.signOut = function () {
+            $http.get('/api/user/logout').success(function (msg) {
+                if(msg['code'] === '0000') {
+                    $rootScope.$broadcast('refreshData');
+                }
+            });
+        }
+        $scope.signIn = function () {
+            // alert("fuck");
+            $modal.open({
+                templateUrl: '/views/login.html',
+                controller: 'userSignIn',
+                size: 'lg'
+            });
+        }
+        
     }]);
 
     app.controller("userSignIn", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
