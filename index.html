@@ -12,33 +12,36 @@
         <script src="/scripts/main.js"></script>
     </head>
     <body>
-    	<nav class="navbar navbar-inverse">
-            <div class="container-fluid" ng-controller="site">
-                <div class="navbar-header navbar-left">
-                    <a class="navbar-brand" href="/#/">OpenView</a>
-                    <ul class="nav navbar-nav">
-                       
-                    </ul>
+    	<nav class="navbar navbar-default" ng-controller="site">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#/">Openview</a>
                 </div>
-                <div class="navbar-header navbar-right">
-                    <ul ng-if="login" class="nav navbar-nav">
-                        <li><a href="{{linkpage}}">欢迎 , {{userName}} </a></li>
-                        <li><a href="javascript:" ng-click="signOut()">登出</a></li>
-                    </ul>
-                    <div ng-if="!login" ng-controller="userSignIn">
-                        <form class="navbar-form" onsubmit="return false;">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="User Name" ng-model="userName">
-                                <input type="password" class="form-control" placeholder="Password" ng-model="password">
-                                <button type="submit" class="btn btn-sm btn-success" ng-click="signIn()">登录</button>
-                                <button type="submit" class="btn btn-sm btn-primary" ng-click="register()">注册</button>
-                                <a href="/#/views/user" class="btn btn-sm btn-primary" >我的主页</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </nav>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                           <li ng-class="{'active': page==='config'}" ng-click="page='config'"><a href="#/"  >冒泡广场<span class="sr-only">(current)</span></a></li>
+                        </ul>
+                        <ul ng-show="!login" class="nav navbar-nav navbar-right">
+                            <li><a href="javascript:" ng-click="signIn()">登录</a></li>
+                        </ul>
+                        <ul ng-show="login" class="nav navbar-nav navbar-right">
+                            <li ng-class="{'active': page==='home'}" ng-click="page='home'"><a href='#/views/config'>主页</a></li>
+                            <li ng-class="{'active': page==='maopao'}" ng-click="page='maopao'"><a href='#/views/useredit/0'>冒泡</a></li>
+                            <li ng-class="{'active': page==='newblog'}" ng-click="page='newblog'"><a href='#/views/useredit/1'>写博客</a></li>
+                            <li ng-class="{'active': page==='logout'}" ng-click="page='logout'"><a href="javascript:" ng-click="logOut()">退出</a></li>
+                        </ul>
+                   </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+
+            </nav>
         <div class="container ng-scope" ng-view>
             
         </div>
