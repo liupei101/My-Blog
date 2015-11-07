@@ -3,8 +3,17 @@ body{
 }
 .body-color{
 	background-color: #F7F6F2;
-	bo
+
 }
-.list-group .show-borderleft{
+.show-borderleft{
 	border-left:2px solid red;
+}
+.show-borderleft-sm {
+	border-left:1px solid rgb(66,139,220);
+}
+.border-for-test {
+	border: 1px solid red;
+}
+.font-p-x{
+	font-size: 15px;
 }
