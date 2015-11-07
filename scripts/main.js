@@ -53,7 +53,7 @@
         };
     });
     app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-        //$locationProvider.html5Mode(true);
+        // $locationProvider.html5Mode(true);
         $routeProvider.
         when("/", {
             templateUrl: '/views/index.html',
@@ -146,6 +146,14 @@
         $scope.visitTime = "2015-10-15";
         $scope.motto = "结成明日奈";
         $scope.contents = "";
+        $scope.fun = function() {
+            $http.get('https://coding.net/api/social/friends/num24?page=1&pageSize=10').success(function (data) {
+                $scope.contents = data;
+                console.log(data);
+            }).error(function (){
+                alert("fuck!");
+            });
+        };
     }]);
 
     app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
