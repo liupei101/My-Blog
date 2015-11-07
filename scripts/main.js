@@ -52,6 +52,15 @@
             replace: true
         };
     });
+
+    app.directive('userinfo', function() {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/userinfo.html',
+            replace: true
+        };
+    });
+
     app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         // $locationProvider.html5Mode(true);
         $routeProvider.
@@ -146,25 +155,29 @@
         $scope.visitTime = "2015-10-15";
         $scope.motto = "结成明日奈";
         $scope.contents = "";
-        $scope.fun = function() {
-            $http.get('https://coding.net/api/social/friends/num24?page=1&pageSize=10').success(function (data) {
-                $scope.contents = data;
-                console.log(data);
-            }).error(function (){
-                alert("fuck!");
-            });
-        };
     }]);
 
     app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'blog';
+        $scope.userName = "NUM_24";
+        $scope.visitTime = "2015-10-15";
+        $scope.motto = "结成明日奈";
+        $scope.contents = "";
     }]);
 
     app.controller("usercourse", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'course';
+        $scope.userName = "NUM_24";
+        $scope.visitTime = "2015-10-15";
+        $scope.motto = "结成明日奈";
+        $scope.contents = "";
     }]);
 
     app.controller("usersetting", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'setting';
+        $scope.userName = "NUM_24";
+        $scope.visitTime = "2015-10-15";
+        $scope.motto = "结成明日奈";
+        $scope.contents = "";
     }]);
 })()

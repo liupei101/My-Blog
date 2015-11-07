@@ -1,22 +1,14 @@
 <div class="row">
     <h1 class="text-center">{{selectPage}}<small>&nbsp;beat</small></h1>
     <hr>
-
-    <div class="col-sm-10">
-    	<div class="row">
-    		<div class="col-sm-3">
-    			<img src="images/face/0.jpg" width="120px" class="img-responsive img-thumbnail" alt="User photo">
-    			<h4>{{userName}}</h4>
-    			<hr style="margin: 6px 0;"><br>
-    			<p class='font-p-x '><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;Visited:<span >&nbsp;{{visitTime}}</span></p>
-    			<p class='font-p-x '><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>&nbsp;Motto:<span style='font-family:KaiTi;'>&nbsp;{{motto}}</span></p>
-    		</div>
-    		<div class="col-sm-5 show-borderleft-sm">
-                <a href="javascript:" ng-click="fun()">历史上的今天</a><hr>
-    			
-    		</div>
-    		
-    	</div>
+    <div class="col-sm-2">
+        <userinfo></userinfo>
     </div>
-    <div class="col-sm-2"><usernav></usernav></div>
+    <div class="col-sm-8 show-borderleft-sm">
+        <h4>Recent</h4><hr>
+    	<h4>正在加载最近动态！</h4>
+    </div>
+    <div class="col-sm-2">
+        <usernav></usernav>
+    </div>
 </div>
