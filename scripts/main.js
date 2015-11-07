@@ -142,6 +142,10 @@
 
     app.controller("userconfig", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'home';
+        $scope.userName = "NUM_24";
+        $scope.visitTime = "2015-10-15";
+        $scope.motto = "结成明日奈";
+        $scope.contents = "";
     }]);
 
     app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
