@@ -26,6 +26,38 @@
         }
     }]);
 
+    app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+        // $locationProvider.html5Mode(true);
+        $routeProvider.
+        when("/", {
+            templateUrl: '/views/index.html',
+            controller: 'config'
+        }).
+        when("/views/config", {
+            templateUrl: '/views/userconfig.html',
+            controller: 'userconfig'
+        }).
+        when("/views/blog", {
+            templateUrl: '/views/userblog.html',
+            controller: 'userblog'
+        }).
+        when("/views/course", {
+            templateUrl: '/views/usercourse.html',
+            controller: 'usercourse'
+        }).
+        when("/views/useredit/:type", {
+            templateUrl: '/views/useredit.html',
+            controller: 'useredit'
+        }).
+        when("/views/setting", {
+            templateUrl: '/views/usersetting.html',
+            controller: 'usersetting'
+        }).
+        otherwise({
+            redirectTo: '/views/404'
+        });
+    }]);
+
     app.directive('markdown', function() {
         return {
             restrict: 'EA',
@@ -61,45 +93,28 @@
         };
     });
 
-    app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-        // $locationProvider.html5Mode(true);
-        $routeProvider.
-        when("/", {
-            templateUrl: '/views/index.html',
-            controller: 'config'
-        }).
-        when("/views/config", {
-            templateUrl: '/views/userconfig.html',
-            controller: 'userconfig'
-        }).
-        when("/views/blog", {
-            templateUrl: '/views/userblog.html',
-            controller: 'userblog'
-        }).
-        when("/views/course", {
-            templateUrl: '/views/usercourse.html',
-            controller: 'usercourse'
-        }).
-        when("/views/useredit/:type", {
-            templateUrl: '/views/useredit.html',
-            controller: 'useredit'
-        }).
-        when("/views/setting", {
-            templateUrl: '/views/usersetting.html',
-            controller: 'usersetting'
-        }).
-        otherwise({
-            redirectTo: '/views/404'
-        });
+    app.factory('AuthData', [function () {
+        var DEBUG = 1;
+        var user = {
+            "login": "1" ,
+            "userName": "NUM_24" ,
+            "visitTime": "2015-10-15" ,
+            "motto": "结成明日奈" ,
+            "contents": ''
+        };
+        return {
+            user,
+            DEBUG
+        };
     }]);
 
-    app.run(['$rootScope', function($rootScope) {
-        $rootScope.DEBUG = 1;
-        $rootScope.login = 1;
+    app.run(['$rootScope', 'AuthData', function($rootScope,AuthData) {
+        $rootScope.DEBUG = AuthData.DEBUG;
+        $rootScope.login = AuthData.user.login;
     }]);
 
-    app.controller("site", ['$scope', '$rootScope', '$modal', function($scope, $rootScope, $modal) {
-        // $scope.login = 0;
+    app.controller("site", ['$scope', '$rootScope', '$modal', 'AuthData', function($scope,$rootScope,$modal,AuthData) {
+        $scope.login = AuthData.user.login;
         $scope.page = "config";
         
         $scope.logOut = function () {
@@ -119,7 +134,7 @@
         
     }]);
 
-    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$modalInstance', function($scope,$http,$rootScope,$modalInstance) {
+    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$modalInstance', 'AuthData', function($scope,$http,$rootScope,$modalInstance,AuthData) {
         $scope.userName = '';
         $scope.password = '';
         $scope.signIn = function () {
@@ -145,39 +160,27 @@
         }
     }]);
 
-    app.controller("config", ['$scope', '$rootScope', '$http', function($scope,$rootScope,$http) {
+    app.controller("config", ['$scope', '$rootScope', '$http', 'AuthData', function($scope,$rootScope,$http,AuthData) {
         
     }]);
 
-    app.controller("userconfig", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("userconfig", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'home';
-        $scope.userName = "NUM_24";
-        $scope.visitTime = "2015-10-15";
-        $scope.motto = "结成明日奈";
-        $scope.contents = "";
+        $scope.user = AuthData.user;
     }]);
 
-    app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'blog';
-        $scope.userName = "NUM_24";
-        $scope.visitTime = "2015-10-15";
-        $scope.motto = "结成明日奈";
-        $scope.contents = "";
+        $scope.user = AuthData.user;
     }]);
 
-    app.controller("usercourse", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'course';
-        $scope.userName = "NUM_24";
-        $scope.visitTime = "2015-10-15";
-        $scope.motto = "结成明日奈";
-        $scope.contents = "";
+        $scope.user = AuthData.user;
     }]);
 
-    app.controller("usersetting", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'setting';
-        $scope.userName = "NUM_24";
-        $scope.visitTime = "2015-10-15";
-        $scope.motto = "结成明日奈";
-        $scope.contents = "";
+        $scope.user = AuthData.user;
     }]);
 })()
