@@ -41,6 +41,10 @@
             templateUrl: '/views/userblog.html',
             controller: 'userblog'
         }).
+        when("/views/blogview/:name/:id", {
+            templateUrl: '/views/blogview.html',
+            controller: 'blogview'
+        }).
         when("/views/course", {
             templateUrl: '/views/usercourse.html',
             controller: 'usercourse'
@@ -172,6 +176,16 @@
     app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'blog';
         $scope.user = AuthData.user;
+        $http.get('/json/blogs.json').success(function (data) {
+            if(data['status'] === '1') {
+                $scope.blogs = data['blogs'];
+            }
+            else {
+                alert(data['msg']);
+            }
+        }).error(function () {
+            alert("Network Error!");
+        });
     }]);
 
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {

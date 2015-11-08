@@ -4,9 +4,14 @@
     <div class="col-sm-2">
         <userinfo></userinfo>
     </div>
-    <div class="col-sm-8 show-borderleft-sm">
-        <h4>Recent</h4><hr>
-        <h4>正在加载最近动态！</h4>
+    <div class="col-sm-8">
+        <h3>Blog List</h3><hr>
+        <div class="bloglist" ng-repeat="blog in blogs">
+            <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.anthor}}/{{blog.id}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="blog.purview==='0'" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
+            <p class="blog-introduce">{{blog.introduce}}</p>
+            <p class="text-right blog-footer"><small><span class="date">{{blog.date}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> </span>&nbsp;阅读:{{blog.viewtimes}}&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-edit" aria-hidden="true"> </span><a href="#/views/useredit/{{blog.id}}">&nbsp;编辑</a> &nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog()">&nbsp;删除</a></small></p>
+            <hr>
+        </div>
     </div>
     <div class="col-sm-2">
         <usernav></usernav>

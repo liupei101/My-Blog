@@ -8,12 +8,48 @@ body{
 .show-borderleft{
 	border-left:2px solid red;
 }
-.show-borderleft-sm {
-	border-left:1px solid rgb(66,139,220);
-}
 .border-for-test {
 	border: 1px solid red;
 }
 .font-p-x{
 	font-size: 15px;
+}
+.bloglist a:link {
+    color: #767676;
+}
+.bloglist a:visited {
+    color: #767676;
+}
+.bloglist a:hover {
+    color: black;
+    font-weight: 100;
+}
+.blog-title a:link {
+    color: #000;
+}
+.blog-title a:visited {
+    color: #000;
+}
+.blog-title a:hover {
+    color: #3E3E3E;
+    font-weight: 100;
+}
+.blog-title {
+	font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 16px;
+    line-height: 30px;
+    font-family: 'Microsoft YaHei';
+}
+.blog-introduce {
+	font-size: 14px;
+	color: #666;
+	line-height: 24px;
+    font-family: Arial;
+    text-indent: 2em;
+}
+.blog-footer {
+    color: rgb(153,153,153);
 }
