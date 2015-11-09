@@ -97,37 +97,19 @@
         };
     });
 
-    app.factory('AuthData', [function () {
-        var DEBUG = 1;
-        var user = {
-            "login": "1" ,
-            "userName": "NUM_24" ,
-            "visitTime": "2015-10-15" ,
-            "motto": "结成明日奈" ,
-            "contents": ''
-        };
-        return {
-            user,
-            DEBUG
-        };
+    app.run(['$rootScope', function($rootScope) {
+        $rootScope.DEBUG = '1';
+        $rootScope.login = 1;
     }]);
 
-    app.run(['$rootScope', 'AuthData', function($rootScope,AuthData) {
-        $rootScope.DEBUG = AuthData.DEBUG;
-        $rootScope.login = AuthData.user.login;
-    }]);
-
-    app.controller("site", ['$scope', '$rootScope', '$modal', 'AuthData', function($scope,$rootScope,$modal,AuthData) {
-        $scope.login = AuthData.user.login;
+    app.controller("site", ['$scope', '$rootScope', '$http', '$modal', function($scope,$rootScope,$http,$modal) {
+        $scope.login = $rootScope.login;
         $scope.page = "config";
         
         $scope.logOut = function () {
             $rootScope.login = !$rootScope.login;
-            $http.get('/api/user/logout').success(function (msg) {
-                if(msg['code'] === '0000') {
-                    $rootScope.$broadcast('refreshData');
-                }
-            });
+            $scope.login = $rootScope.login;
+            alert($rootScope.login);
         }
         $scope.signIn = function () {
             $modal.open({
@@ -138,7 +120,7 @@
         
     }]);
 
-    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$modalInstance', 'AuthData', function($scope,$http,$rootScope,$modalInstance,AuthData) {
+    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$modalInstance', function($scope,$http,$rootScope,$modalInstance) {
         $scope.userName = '';
         $scope.password = '';
         $scope.signIn = function () {
@@ -164,18 +146,16 @@
         }
     }]);
 
-    app.controller("config", ['$scope', '$rootScope', '$http', 'AuthData', function($scope,$rootScope,$http,AuthData) {
+    app.controller("config", ['$scope', '$rootScope', '$http', function($scope,$rootScope,$http) {
         
     }]);
 
-    app.controller("userconfig", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("userconfig", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'home';
-        $scope.user = AuthData.user;
     }]);
 
-    app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'blog';
-        $scope.user = AuthData.user;
         $http.get('/json/blogs.json').success(function (data) {
             if(data['status'] === '1') {
                 $scope.blogs = data['blogs'];
@@ -188,13 +168,25 @@
         });
     }]);
 
-    app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("usercourse", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'course';
-        $scope.user = AuthData.user;
+        $scope.photoSrc = './images/pic/bg.jpg';
+        $scope.uplaodPhoto = function(){
+            alert('上传图片成功!');
+        };
     }]);
 
-    app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("usersetting", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
         $scope.selectPage = 'setting';
-        $scope.user = AuthData.user;
+        $scope.key = {
+            password: '',
+            newPassword: '',
+            confirmPassword: '',
+            motto: '结成明日奈'
+        };
+        $scope.confirmModify = function(){
+            $scope.sending = 0;
+            alert('修改成功！');
+        };
     }]);
 })()

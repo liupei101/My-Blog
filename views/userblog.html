@@ -5,7 +5,11 @@
         <userinfo></userinfo>
     </div>
     <div class="col-sm-8">
-        <h3>Blog List</h3><hr>
+        <div class="row">
+            <div class="col-sm-3"><h3 class="text-left">Blog List</h3></div>
+            <div class="col-sm-2 col-sm-offset-7"><h3><a href="#/views/useredit/1" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>&nbsp;写博客</a></h3></div>
+        </div>
+        <hr>
         <div class="bloglist" ng-repeat="blog in blogs">
             <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.anthor}}/{{blog.id}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="blog.purview==='0'" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
             <p class="blog-introduce">{{blog.introduce}}</p>

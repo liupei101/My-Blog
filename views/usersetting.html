@@ -5,8 +5,40 @@
         <userinfo></userinfo>
     </div>
     <div class="col-sm-8">
-        <h4>Recent</h4><hr>
-        <h4>正在加载最近动态！</h4>
+        <div class="row">
+            <div class="col-sm-4"><h3 class="text-left">Pesonal Setting</h3></div>
+            <div class="col-sm-2 col-sm-offset-6"><h3><button class="btn btn-danger" ng-disabled="sending" ng-click="confirmModify()"><span class="glyphicon glyphicon-ok"></span>&nbsp;确认</button></h3></div>
+        </div>
+        <hr>
+        <div class="row">
+            <fieldset>
+                <div class="row form-group ">
+                    <label class="control-label col-sm-4 col-md-3" for="password"><p class="text-right">old password</p></label>
+                    <div class="col-sm-8 col-md-5">
+                      <input type="password" ng-model="key.password" id="password" ng-maxlength="50" ng-minlength="1" class="form-control input-sm ng-pristine ng-valid ng-valid-maxlength ng-valid-minlength">
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <label class="control-label col-sm-4 col-md-3" for="newpassword"><p class="text-right">new password</p></label>
+                    <div class="col-sm-8 col-md-5">
+                      <input type="password" ng-model="key.newPassword" id="newpassword" ng-maxlength="50" ng-minlength="1" class="form-control input-sm ng-pristine ng-valid ng-valid-maxlength ng-valid-minlength">
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <label class="control-label col-sm-4 col-md-3" for="confirmpassword"><p class="text-right">comfirm password</p></label>
+                    <div class="col-sm-8 col-md-5">
+                      <input type="password" ng-model="key.confirmPassword" id="confirmpassword" ng-maxlength="50" ng-minlength="1" class="form-control input-sm ng-pristine ng-valid ng-valid-maxlength ng-valid-minlength">
+                    </div>
+                </div>
+                <div class="row form-group ">
+                    <label class="control-label col-sm-4 col-md-3" for="motto"><p class="text-right">Motto</p></label>
+                    <div class="col-sm-8 col-md-5">
+                      <textarea class="form-control" ng-model="key.motto" ng-maxlength="50" ng-minlength="1" rows="5"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        
     </div>
     <div class="col-sm-2">
         <usernav></usernav>
