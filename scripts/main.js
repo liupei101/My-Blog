@@ -81,6 +81,30 @@
         };
     });
 
+    app.factory('AuthData',  [ '$http',function ($http) {
+        var User;//JSON数据格式
+        var DEBUG = 1;
+        var doRequest = function (path, way, params) {
+            return $http({
+                url: path,
+                method: way,
+                data: params
+            });
+        };
+        return {
+            //params传入为数组对象形式
+            defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
+            login: function(params) {return doRequest('/json/login.json','get',params);} ,
+            logout: function() {return doRequest('/json/logout.json','get','');} ,
+            userData: function(params) {return doRequest('/json/user.json','get',params);} ,
+            userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
+            userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
+            setUser: function(newUser) { User = newUser;} ,
+            User,
+            DEBUG
+        };
+    }]);
+
     app.directive('usernav', function() {
         return {
             restrict: 'E',
@@ -97,51 +121,88 @@
         };
     });
 
-    app.run(['$rootScope', function($rootScope) {
+    app.run(['$rootScope', '$window', 'AuthData', function($rootScope,$window,AuthData) {
         $rootScope.DEBUG = '1';
-        $rootScope.login = 1;
+        $rootScope.login = 0 ;
+        var getAuthData = function(admin) {
+            AuthData.userData(admin).success(function (msg) {
+                if(msg['code'] = "0000") {
+                    AuthData.User = msg.data;
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function() {
+                alert("Network Error!");
+            })
+        };
+        var fetchData = function() {
+            AuthData.defaultSetting().success(function (msg) {
+                if(msg['code'] === '0000') {
+                    getAuthData(msg['admin']);
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function() {
+                alert("Network Error!");
+            });
+        };
+        
+        fetchData();
+        $window.location.replace('/#/');
+        //@ 刷新时需要fetchData
+
     }]);
 
-    app.controller("site", ['$scope', '$rootScope', '$http', '$modal', function($scope,$rootScope,$http,$modal) {
+    app.controller("site", ['$scope', '$rootScope','$window', '$modal', 'AuthData', function($scope, $rootScope, $window, $modal, AuthData) {
+        $scope.page = 'config';
         $scope.login = $rootScope.login;
-        $scope.page = "config";
-        
-        $scope.logOut = function () {
+        $scope.$on('updateUserData', function () {
             $rootScope.login = !$rootScope.login;
             $scope.login = $rootScope.login;
-            alert($rootScope.login);
-        }
-        $scope.signIn = function () {
+            $scope.page = 'config';
+            $window.location.replace('/#/');
+            //alert($scope.User.login + " " + $scope.User.name);
+        });
+
+        $scope.signOut = function () {
+            AuthData.logout().success(function (msg) {
+                if(msg['code'] === '0000') {
+                    $rootScope.$broadcast('updateUserData');
+                }
+            }).error(function() {
+                alert("Network Error!");
+            });
+        };
+
+        $scope.signIn = function() {
             $modal.open({
                 templateUrl: '/views/login.html',
                 controller: 'userSignIn'
             });
-        }
-        
+        };
     }]);
 
-    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$modalInstance', function($scope,$http,$rootScope,$modalInstance) {
-        $scope.userName = '';
-        $scope.password = '';
+    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$window', '$modalInstance', 'AuthData', function($scope,$http,$rootScope,$window,$modalInstance,AuthData) {
+        $scope.loginForm = {
+            name: '' ,
+            password: ''
+        };
         $scope.signIn = function () {
-            $http({
-                url: '/api/user/login',
-                method: 'post',
-                data: {
-                    userName: $scope.userName,
-                    password: $scope.password
-                }
-            }).success(function (msg){
+            AuthData.login($scope.loginForm).success(function (msg){
                 if(msg['code'] !== '0000') {
                     alert(msg['errorMsg']);
                 }
-                $rootScope.$broadcast('refreshData');
-                $rootScope.$broadcast('updateUserData');
+                else {
+                    $rootScope.$broadcast('updateUserData');//更新site视图数据
+                    $modalInstance.close();
+                }
             }).error(function () {
                 alert("Network Error!");
             });
         };
-        $scope.close = function () {
+        $scope.close = function() {
             $modalInstance.close();
         }
     }]);
@@ -150,13 +211,16 @@
         
     }]);
 
-    app.controller("userconfig", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("userconfig", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'home';
+        $scope.user = AuthData.User;
+        
     }]);
 
-    app.controller("userblog", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'blog';
-        $http.get('/json/blogs.json').success(function (data) {
+        $scope.user = AuthData.User;
+        AuthData.userBlogList().success(function (data) {
             if(data['status'] === '1') {
                 $scope.blogs = data['blogs'];
             }
@@ -168,16 +232,18 @@
         });
     }]);
 
-    app.controller("usercourse", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'course';
+        $scope.user = AuthData.User;
         $scope.photoSrc = './images/pic/bg.jpg';
         $scope.uplaodPhoto = function(){
             alert('上传图片成功!');
         };
     }]);
 
-    app.controller("usersetting", ['$scope', '$http', '$rootScope', function($scope,$http,$rootScope) {
+    app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'setting';
+        $scope.user = AuthData.User;
         $scope.key = {
             password: '',
             newPassword: '',

@@ -2,6 +2,7 @@
 <html ng-app="app">
     <head>
     	<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     	<title>OpenView</title>
     	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="/style/main.css">
@@ -16,33 +17,32 @@
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="true">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#/">Openview</a>
+                    <a class="navbar-brand" ng-class="{'show-borderbottom': page==='config'}" ng-click="page='config'" href="#/">Openview</a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                           <li ng-class="{'active': page==='config'}" ng-click="page='config'"><a href="#/"  >冒泡广场<span class="sr-only">(current)</span></a></li>
+                        <ul ng-show="!login" class="nav navbar-nav">
+                            <li ng-class="{'show-borderbottom': page==='home'}" ng-click="page='home'"><a href='#/views/config'>主页</a></li>
                         </ul>
                         <ul ng-show="!login" class="nav navbar-nav navbar-right">
-                            <li ng-class="{'active': page==='login'}" ng-click="page='login'"><a href="javascript:" ng-click="signIn()">登录</a></li>
-                            <!-- DEBUG 模式下 -->
-                            <li><a href="javascript:" ng-click="logOut()">退出</a></li>
+                            <li ng-class="{'show-borderbottom': page==='login'}" ng-click="page='login'"><a href="javascript:" ng-click="signIn()">登录</a></li>
+                        </ul>
+                        <ul ng-show="login" class="nav navbar-nav">
+                            <li ng-class="{'show-borderbottom': page==='home'}" ng-click="page='home'"><a href='#/views/config'>主页</a></li>
+                            <li ng-class="{'show-borderbottom': page==='newblog'}" ng-click="page='newblog'"><a href='#/views/useredit/1'>写博客</a></li>
                         </ul>
                         <ul ng-show="login" class="nav navbar-nav navbar-right">
-                            <li ng-class="{'active': page==='home'}" ng-click="page='home'"><a href='#/views/config'>主页</a></li>
-                            <li ng-class="{'active': page==='maopao'}" ng-click="page='maopao'"><a href='#/views/useredit/0'>冒泡</a></li>
-                            <li ng-class="{'active': page==='newblog'}" ng-click="page='newblog'"><a href='#/views/useredit/1'>写博客</a></li>
-                            <li ng-class="{'active': page==='logout'}" ng-click="page='logout'"><a href="javascript:" ng-click="logOut()">退出</a></li>
+                            <li ng-class="{'show-borderbottom': page==='logout'}" ng-click="page='logout'"><a href="javascript:" ng-click="signOut()">退出</a></li>
                         </ul>
-                   </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-            </nav>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
         <div class="container ng-scope" ng-view>
             
         </div>
