@@ -5,6 +5,7 @@ body{
 .body-color{
 	background-color: #F7F6F2;
 }
+/*红色边界设置*/
 .show-borderbottom {
     border-bottom: 0.1em solid red;
 }
@@ -14,8 +15,10 @@ body{
 .border-for-test {
 	border: 1px solid red;
 }
+/*用户信息样式设置*/
 .font-p-x{
 	font-size: 15px;
+    padding-left: 20px;
 }
 .feture-motto {
     font-weight: 600;
@@ -23,9 +26,14 @@ body{
 }
 /*视图中间内容的边框*/
 .center-view {
+    background-color: white;
     border: 1px solid #E3E3E3;
     border-radius: 6px 6px 6px 6px;
 }
+.center-view-padding {
+    padding: 45px;
+}
+/*文章列表设置*/
 .bloglist a:link {
     color: #767676;
 }

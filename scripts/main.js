@@ -41,7 +41,7 @@
             templateUrl: '/views/userblog.html',
             controller: 'userblog'
         }).
-        when("/views/blogview/:name/:id", {
+        when("/views/blogview/:id", {
             templateUrl: '/views/blogview.html',
             controller: 'blogview'
         }).
@@ -230,6 +230,11 @@
         }).error(function () {
             alert("Network Error!");
         });
+    }]);
+
+    app.controller("blogview", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+        
+        
     }]);
 
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
