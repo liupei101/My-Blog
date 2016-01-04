@@ -24,6 +24,11 @@ body{
     font-weight: 600;
     font-family: 'KaiTi';
 }
+.link-for-category {
+    font-size: 13px;
+    color:#1E4A5E;
+    padding-left: 20px;
+}
 /*视图中间内容的边框*/
 .center-view {
     background-color: white;

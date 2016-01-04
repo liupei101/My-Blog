@@ -41,6 +41,10 @@
             templateUrl: '/views/userblog.html',
             controller: 'userblog'
         }).
+        when("/views/category/:id", {
+            templateUrl: '/views/userblog.html',
+            controller: 'categoryview'
+        }).
         when("/views/blogview/:id", {
             templateUrl: '/views/blogview.html',
             controller: 'blogview'
@@ -83,6 +87,7 @@
 
     app.factory('AuthData',  [ '$http',function ($http) {
         var User;//JSON数据格式
+        var Category;
         var DEBUG = 1;
         var doRequest = function (path, way, params) {
             return $http({
@@ -98,9 +103,11 @@
             logout: function() {return doRequest('/json/logout.json','get','');} ,
             userData: function(params) {return doRequest('/json/user.json','get',params);} ,
             userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
+            userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
             userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
             setUser: function(newUser) { User = newUser;} ,
             User,
+            Category,
             DEBUG
         };
     }]);
@@ -134,7 +141,18 @@
                 }
             }).error(function() {
                 alert("Network Error!");
-            })
+            });
+            //得到文章分类信息
+            AuthData.userCategory(admin).success(function (msg) {
+                if(msg['code'] = "0000") {
+                    AuthData.Category = msg['data'];
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function() {
+                alert("Network Error!");
+            });
         };
         var fetchData = function() {
             AuthData.defaultSetting().success(function (msg) {
@@ -214,12 +232,13 @@
     app.controller("userconfig", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'home';
         $scope.user = AuthData.User;
-        
+        $scope.category = AuthData.Category;
     }]);
 
     app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'blog';
         $scope.user = AuthData.User;
+        $scope.category = AuthData.Category;
         AuthData.userBlogList().success(function (data) {
             if(data['status'] === '1') {
                 $scope.blogs = data['blogs'];
@@ -232,6 +251,14 @@
         });
     }]);
 
+    app.controller("categoryview", ['$scope', '$http', '$rootScope', '$routeParams', 'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
+        $scope.selectPage = 'blog';
+        $scope.user = AuthData.User;
+        $scope.category = AuthData.Category;
+        $scope.categoryID = $routeParams.id;
+        //根据ID查询对应分类的所有文章
+    }]);
+
     app.controller("blogview", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         
         
@@ -240,6 +267,7 @@
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'course';
         $scope.user = AuthData.User;
+        $scope.category = AuthData.Category;
         $scope.photoSrc = './images/pic/bg.jpg';
         $scope.uplaodPhoto = function(){
             alert('上传图片成功!');
@@ -249,6 +277,7 @@
     app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'setting';
         $scope.user = AuthData.User;
+        $scope.category = AuthData.Category;
         $scope.key = {
             password: '',
             newPassword: '',
