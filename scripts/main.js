@@ -103,7 +103,9 @@
             logout: function() {return doRequest('/json/logout.json','get','');} ,
             userData: function(params) {return doRequest('/json/user.json','get',params);} ,
             userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
+            userBlogDetail: function(params) {return doRequest('json/blogdetail.json','get','');} ,
             userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
+            similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
             userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
             setUser: function(newUser) { User = newUser;} ,
             User,
@@ -166,9 +168,8 @@
                 alert("Network Error!");
             });
         };
-        
         fetchData();
-        $window.location.replace('/#/');
+        // $window.location.replace('/#/');
         //@ 刷新时需要fetchData
 
     }]);
@@ -240,11 +241,11 @@
         $scope.user = AuthData.User;
         $scope.category = AuthData.Category;
         AuthData.userBlogList().success(function (data) {
-            if(data['status'] === '1') {
+            if(data['code'] === '0000') {
                 $scope.blogs = data['blogs'];
             }
             else {
-                alert(data['msg']);
+                alert(data['errorMsg']);
             }
         }).error(function () {
             alert("Network Error!");
@@ -259,9 +260,37 @@
         //根据ID查询对应分类的所有文章
     }]);
 
-    app.controller("blogview", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
-        
-        
+    app.controller("blogview", ['$scope', '$http', '$rootScope', '$routeParams' ,'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
+        $scope.selectPage = 'blog';
+        $scope.user = AuthData.User;
+        $scope.category = AuthData.Category;
+        $scope.blogID = $routeParams.id;
+        $scope.content = '';
+        //根据id查询对应文章
+        AuthData.userBlogDetail($scope.blogID).success(function (msg) {
+            if(msg['code'] === '0000') {
+                $scope.blogDetail = msg['data'];
+                $scope.content = $scope.blogDetail.content;
+                $scope.cateID = $scope.blogDetail.cateid;
+            }
+            else {
+                alert(msg['msg']);
+            }
+        }).error(function() {
+            alert("Network Error!");
+        });
+        //查询同类文章的所有信息
+        AuthData.similarBlog($scope.cateID).success(function (msg) {
+            if(msg['code'] = "0000") {
+                $scope.BlogSimilar = msg['data'];
+            }
+            else {
+                alert(msg['errorMsg']);
+            }
+        }).error(function () {
+            alert("Network Error!");
+        });
+
     }]);
 
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {

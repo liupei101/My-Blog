@@ -1,4 +1,7 @@
 {
 	"code" : "0000",
-	"errorMsg" : ""
+	"errorMsg" : "",
+	"data" : {
+		"login" : 0
+	}
 }

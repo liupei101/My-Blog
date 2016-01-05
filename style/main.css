@@ -78,3 +78,93 @@ body{
 .blog-footer {
     color: rgb(153,153,153);
 }
+/*文章显示设置*/
+.blogview  a:link {
+    color: #767676;
+}
+.blogview  a:visited {
+    color: #767676;
+}
+.blogview  a:hover {
+    color: black;
+    font-weight: 100;
+    text-decoration: none;
+}
+.blogview-title a:link {
+    color: #000;
+}
+.blogview-title a:visited {
+    color: #000;
+}
+.blogview-title a:hover {
+    color: #3E3E3E;
+    font-weight: 100;
+    text-decoration: none;
+}
+.blogview-title {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 20px;
+    line-height: 30px;
+    font-family: 'Microsoft YaHei';
+}
+/*同类文章显示设置*/
+.similar_c{
+    border: solid 1px #bbb;
+    display: block;
+    margin: 20px 0px 0px 0px;
+}
+.similar_c_t {
+    line-height: 32px;
+    border-bottom: solid 1px #dcdcdc;
+}
+.similar_wrap {
+    background: #fcfcfc;
+    max-height: 180px;
+    overflow-y: auto;
+    padding: 10px 20px;
+}
+.similar_c_t label {
+    display: inline-block;
+    margin-left: 25px;
+    font-size: 16px;
+    color: #666;
+}
+.similar_c_t label em {
+    font-style: normal;
+}
+.similar_cur {
+    font-weight: bold;
+}
+.similar_list {
+    width: 45%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.similar_list li {
+    list-style: none;
+    line-height: 30px;
+}
+.similar_list li a {
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+    color: black;
+}
+.similar_list li em {
+    font-style: normal;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}

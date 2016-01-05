@@ -1,0 +1,47 @@
+<div class="row">
+    <h1 class="text-center">{{selectPage}}<small>&nbsp;beat</small></h1>
+    <hr>
+    <div class="col-sm-2 center-view">
+        <userinfo></userinfo>
+    </div>
+    <div class="col-sm-8 center-view center-view-padding blogview">
+        <p class="blogview-title">
+            <span ng-show="!blogDetail.public" class="glyphicon glyphicon-lock" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blogDetail.id}}">{{blogDetail.title}}</a>
+        </p>
+        <p class="text-right blog-footer">
+            <small>
+                <span class="date">{{blogDetail.postdate}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"> </span>&nbsp;阅读:{{blogDetail.views}}&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"> </span><a href="#/views/useredit/{{blogDetail.id}}" target="_blank">&nbsp;编辑</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog()">&nbsp;删除</a>
+            </small>
+        </p>
+        <hr>
+        <markdown content="content"></markdown>
+        <hr>
+        <!-- 显示同类文章 -->
+        <h4>同类文章: </h4>
+        <div class="similar_c">
+            <div class="similar_c_t">
+                <label class="similar_cur" style="cursor:pointer">{{BlogSimilar.name}}&nbsp;&nbsp;<em>({{BlogSimilar.count}})</em></label>
+            </div>
+            <div class="similar_wrap">
+                <ul class="similar_list fl">
+                    <li ng-repeat="blog in BlogSimilar.content" ng-show="blog.public||user.login">
+                        <em>•</em>
+                        <a href="#/views/blogview/{{blog.id}}">{{blog.title}}</a>
+                    </li>
+                </ul>
+                <ul class="similar_list fr">
+                    <li ng-repeat="blog in BlogSimilar.content" ng-show="blog.public||user.login">
+                        <em>•</em>
+                        <a href="#/views/blogview/{{blog.id}}">{{blog.title}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <usernav></usernav>
+    </div>
+</div>
