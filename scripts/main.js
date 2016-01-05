@@ -53,7 +53,7 @@
             templateUrl: '/views/usercourse.html',
             controller: 'usercourse'
         }).
-        when("/views/useredit/:type", {
+        when("/views/useredit/:id", {
             templateUrl: '/views/useredit.html',
             controller: 'useredit'
         }).
@@ -293,6 +293,19 @@
 
     }]);
 
+    app.controller("useredit", ['$scope', '$rootScope', '$http', function($scope,$rootScope,$http) {
+        $scope.content = '####这里将显示输入内容......';
+        $scope.markcontent = '';
+        $scope.$watch("markcontent", function() {
+            if($scope.markcontent === "") {
+                $scope.content = '####这里将显示输入内容......';
+            }
+            else {
+                $scope.content = $scope.markcontent;
+            }
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        })
+    }]);
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'course';
         $scope.user = AuthData.User;

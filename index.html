@@ -11,6 +11,13 @@
         <script src="/vendor/bootstrap-ui.min.js"> </script>
         <script src="/vendor/marked.min.js"></script>
         <script src="/scripts/main.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+            });
+        </script>
+        
     </head>
     <body>
     	<nav class="navbar navbar-default" ng-controller="site">
@@ -35,7 +42,7 @@
                         </ul>
                         <ul ng-show="login" class="nav navbar-nav">
                             <li ng-class="{'show-borderbottom': page==='home'}" ng-click="page='home'"><a href='#/views/config'>主页</a></li>
-                            <li ng-class="{'show-borderbottom': page==='newblog'}" ng-click="page='newblog'"><a href='#/views/useredit/1'>写博客</a></li>
+                            <li ng-class="{'show-borderbottom': page==='newblog'}" ng-click="page='newblog'"><a href='#/views/useredit/new'>写博客</a></li>
                         </ul>
                         <ul ng-show="login" class="nav navbar-nav navbar-right">
                             <li ng-class="{'show-borderbottom': page==='logout'}" ng-click="page='logout'"><a href="javascript:" ng-click="signOut()">退出</a></li>
