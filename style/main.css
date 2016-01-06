@@ -180,13 +180,93 @@ body{
     background-color: white;
     border: 1px solid #E3E3E3;
     border-radius: 6px 6px 6px 6px;
-    padding: 30px;
+    padding: 20px;
     font-size: 16px;
     font-family: 'Microsoft YaHei';
-    min-height: 600px;
+    min-height: 500px;
     width: 100%;
     max-width: 100%;
 }
 #editor pre {
     font: normal .9em "Source Code Pro",monospace;
 }
+/*编辑器navbar设置*/
+.box-l .input-group {
+    float: left;
+    width: 50%;
+}
+.box-l input {
+    font-size: 16px;
+    font-family: 'Microsoft YaHei';
+}
+.box-l .btn-group {
+    float: right;
+    margin-left: 20px;
+}
+.box-r .btn-group {
+    float: left;
+    margin-right: 20px;
+}
+.box-r hr, .box-l hr {
+    display: inline-block;
+}
+/*上传图片信息提示*/
+.upload-info {
+    text-align: center;
+    font-family: "Microsoft YaHei";
+    font-size: 16px;
+}
+/*帮助框设置*/
+.modal-helps {
+    width: 33%;
+    position: absolute;
+    right: 0px;
+    top: 38%;
+}
+.help-menu {
+    width: 25%;
+    max-height: 420px;
+    overflow: auto;
+    padding: 10px 0;
+    list-style: none;
+}
+ol {
+    margin-top: 0;
+}
+.modal-helps .modal-body .help-menu>li.active, .modal-helps .modal-body .help-menu>li:hover {
+    background: #aaa;
+    cursor: pointer;
+}
+.modal-helps .modal-body .help-menu>li {
+    font-size: 12px;
+    line-height: 16px;
+    padding: 5px;
+    margin: 0;
+    color: #999;
+    border-bottom: 1px solid #aaa;
+}
+.modal-helps .modal-body .help-menu>li a {
+    color: #333;
+    text-decoration: none;
+}
+.modal-helps .modal-body .help-menu>li.active>a {
+    color: white;
+}
+.modal-helps .modal-body .help-menu>li.active>div {
+    display: block;
+    position: absolute;
+    background: #fff;
+    width: 75%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    border-left: 1px solid #ccc;
+    overflow: auto;
+    cursor: default;
+}
+.modal-helps .modal-body .help-menu>li.active>div>h4 {
+    font-size: 14px;
+    color: #555;
+}
+

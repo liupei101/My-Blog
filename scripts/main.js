@@ -78,6 +78,7 @@
                         var content = angular.copy($scope.content);
                         content = marked(content);//解析markdown文档的方法
                         $element.empty().append(content);
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                     }, true);
                 }
             },
@@ -293,9 +294,21 @@
 
     }]);
 
-    app.controller("useredit", ['$scope', '$rootScope', '$http', function($scope,$rootScope,$http) {
+    app.controller("useredit", ['$scope', '$rootScope', '$http', '$modal', function($scope,$rootScope,$http,$modal) {
         $scope.content = '####这里将显示输入内容......';
         $scope.markcontent = '';
+        //一段傻逼的jQuery代码:
+        var x = $('.modal-helps');
+        x.find("li").find('div').hide();
+        x.find('li:first').addClass('active');
+        x.find('li:first').find('div').show();
+        x.find("li").click(function(){
+            x.find('li.active').find('div').hide();
+            x.find('li.active').removeClass('active');
+            $(this).addClass('active');
+            $(this).find('div').show();
+        });
+        //傻逼代码结束 QAQ
         $scope.$watch("markcontent", function() {
             if($scope.markcontent === "") {
                 $scope.content = '####这里将显示输入内容......';
@@ -303,9 +316,29 @@
             else {
                 $scope.content = $scope.markcontent;
             }
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        })
+        });
+        $scope.insertImg = function() {
+            $modal.open({
+                templateUrl: '/views/uploadimg.html',
+                controller: 'uploadimg'
+            });
+        };
     }]);
+
+    app.controller("uploadimg", ['$scope', '$http', '$rootScope', '$modalInstance', function($scope,$http,$rootScope,$modalInstance) {
+        $scope.imgUrl = "images/pic/2333.jpg";
+        $scope.finished = 0;
+        $scope.showHelps = 0;
+        $scope.pic = "";
+        $scope.uploadImg = function () {
+            alert("正在上传");
+            $scope.finished = 1;
+        };
+        $scope.close = function() {
+            $modalInstance.close();
+        };
+    }]);
+
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'course';
         $scope.user = AuthData.User;
@@ -315,6 +348,7 @@
             alert('上传图片成功!');
         };
     }]);
+
 
     app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
         $scope.selectPage = 'setting';
