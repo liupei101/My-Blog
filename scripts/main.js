@@ -317,6 +317,11 @@
                 $scope.content = $scope.markcontent;
             }
         });
+        $scope.postArticle = function() {
+            //调用发表文章API
+            alert("发表成功");
+            //跳转至对应文章页面
+        };
         $scope.insertImg = function() {
             $modal.open({
                 templateUrl: '/views/uploadimg.html',

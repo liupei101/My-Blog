@@ -203,6 +203,11 @@ body{
     float: right;
     margin-left: 20px;
 }
+.box-r .input-group {
+    float: left;
+    width: 30%;
+    margin-right: 20px;
+}
 .box-r .btn-group {
     float: left;
     margin-right: 20px;
@@ -269,4 +274,3 @@ ol {
     font-size: 14px;
     color: #555;
 }
-
