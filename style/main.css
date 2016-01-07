@@ -175,6 +175,7 @@ body{
     border-radius: 6px 6px 6px 6px;
     padding: 30px;
     min-height: 500px;
+    overflow: hidden;
 }
 #editor {
     background-color: white;
@@ -226,7 +227,7 @@ body{
     width: 33%;
     position: absolute;
     right: 0px;
-    top: 38%;
+    top: 30%;
 }
 .help-menu {
     width: 25%;

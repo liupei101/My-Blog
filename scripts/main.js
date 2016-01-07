@@ -136,6 +136,20 @@
         $rootScope.DEBUG = '1';
         $rootScope.login = 0 ;
         $rootScope.onViewPage = "home";
+        $rootScope.fullNGView = function() {
+            $('#navbar').hide();
+            $('#navinfo').hide();
+            var xx = $('#blog-editor').parent();
+            xx.removeClass('col-sm-8');
+            xx.addClass('col-sm-12');
+        };
+        $rootScope.normalNGView = function() {
+            var xx = $('#blog-editor').parent();
+            xx.removeClass('col-sm-12');
+            xx.addClass('col-sm-8');
+            $('#navinfo').show();
+            $('#navbar').show();
+        };
         var getAuthData = function(admin) {
             AuthData.userData(admin).success(function (msg) {
                 if(msg['code'] = "0000") {
@@ -281,8 +295,12 @@
 
     app.controller("blogview", ['$scope', '$http', '$rootScope', '$routeParams' ,'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
+        $scope.user = AuthData.User;
         $scope.blogID = $routeParams.id;
         $scope.content = '';
+        $scope.$on("getData", function() {
+            $scope.user = AuthData.User;
+        });
         //根据id查询对应文章
         AuthData.userBlogDetail($scope.blogID).success(function (msg) {
             if(msg['code'] === '0000') {
@@ -327,6 +345,7 @@
             $(this).addClass('active');
             $(this).find('div').show();
         });
+        $rootScope.fullNGView();
         //傻逼代码结束 QAQ
         $scope.$on("getData", function() {
             $scope.user = AuthData.User;
