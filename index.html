@@ -52,8 +52,19 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <div class="container ng-scope" ng-view>
-            
+        <div class="container">
+            <div class="row">
+                <hr>
+                <div class="col-sm-2 center-view" ng-controller="usernavinfo">
+                    <userinfo></userinfo>
+                </div>
+                <div class="col-sm-8 center-view center-view-padding ng-scope" ng-view>
+                    <!--ng-view-->
+                </div>
+                <div class="col-sm-2" ng-controller="navbar">
+                    <usernav></usernav>
+                </div>
+            </div>
         </div>
     </body>
 </html>

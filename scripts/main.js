@@ -12,7 +12,7 @@
         return false;
     }
     var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
-
+    
     app.config(['$httpProvider', function($httpProvider){
         $httpProvider.defaults.transformRequest = function(obj){
             var str = [];
@@ -107,6 +107,7 @@
             userBlogDetail: function(params) {return doRequest('json/blogdetail.json','get','');} ,
             userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
             similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
+            addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
             userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
             setUser: function(newUser) { User = newUser;} ,
             User,
@@ -134,6 +135,7 @@
     app.run(['$rootScope', '$window', 'AuthData', function($rootScope,$window,AuthData) {
         $rootScope.DEBUG = '1';
         $rootScope.login = 0 ;
+        $rootScope.onViewPage = "home";
         var getAuthData = function(admin) {
             AuthData.userData(admin).success(function (msg) {
                 if(msg['code'] = "0000") {
@@ -149,6 +151,8 @@
             AuthData.userCategory(admin).success(function (msg) {
                 if(msg['code'] = "0000") {
                     AuthData.Category = msg['data'];
+                    //刷新时同步显示信息
+                    $rootScope.$broadcast("getData");
                 }
                 else {
                     alert(msg['errorMsg']);
@@ -156,8 +160,9 @@
             }).error(function() {
                 alert("Network Error!");
             });
+            
         };
-        var fetchData = function() {
+        $rootScope.fetchData = function() {
             AuthData.defaultSetting().success(function (msg) {
                 if(msg['code'] === '0000') {
                     getAuthData(msg['admin']);
@@ -169,14 +174,27 @@
                 alert("Network Error!");
             });
         };
-        fetchData();
+        $rootScope.fetchData();
         // $window.location.replace('/#/');
         //@ 刷新时需要fetchData
 
     }]);
+    
+    app.controller("usernavinfo", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
+        $scope.$on("getData", function() {
+            $scope.user = AuthData.User;
+            $scope.category = AuthData.Category;
+        });
+    }]);
+
+    app.controller("navbar", ['$scope', '$rootScope', function($scope,$rootScope) {
+        $scope.$watch("onViewPage", function() {
+            $scope.selectPage = $rootScope.onViewPage;
+        });
+    }]);
 
     app.controller("site", ['$scope', '$rootScope','$window', '$modal', 'AuthData', function($scope, $rootScope, $window, $modal, AuthData) {
-        $scope.page = 'config';
+        $scope.page = 'home';
         $scope.login = $rootScope.login;
         $scope.$on('updateUserData', function () {
             $rootScope.login = !$rootScope.login;
@@ -224,7 +242,7 @@
         };
         $scope.close = function() {
             $modalInstance.close();
-        }
+        };
     }]);
 
     app.controller("config", ['$scope', '$rootScope', '$http', function($scope,$rootScope,$http) {
@@ -232,15 +250,16 @@
     }]);
 
     app.controller("userconfig", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
-        $scope.selectPage = 'home';
-        $scope.user = AuthData.User;
-        $scope.category = AuthData.Category;
+        $rootScope.onViewPage = "home";
+        
     }]);
 
     app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
-        $scope.selectPage = 'blog';
+        $rootScope.onViewPage = "blog";
         $scope.user = AuthData.User;
-        $scope.category = AuthData.Category;
+        $scope.$on("getData", function() {
+            $scope.user = AuthData.User;
+        });
         AuthData.userBlogList().success(function (data) {
             if(data['code'] === '0000') {
                 $scope.blogs = data['blogs'];
@@ -254,17 +273,14 @@
     }]);
 
     app.controller("categoryview", ['$scope', '$http', '$rootScope', '$routeParams', 'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
-        $scope.selectPage = 'blog';
-        $scope.user = AuthData.User;
-        $scope.category = AuthData.Category;
+        $rootScope.onViewPage = "blog";
         $scope.categoryID = $routeParams.id;
+        
         //根据ID查询对应分类的所有文章
     }]);
 
     app.controller("blogview", ['$scope', '$http', '$rootScope', '$routeParams' ,'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
-        $scope.selectPage = 'blog';
-        $scope.user = AuthData.User;
-        $scope.category = AuthData.Category;
+        $rootScope.onViewPage = "blog";
         $scope.blogID = $routeParams.id;
         $scope.content = '';
         //根据id查询对应文章
@@ -294,7 +310,10 @@
 
     }]);
 
-    app.controller("useredit", ['$scope', '$rootScope', '$http', '$modal', function($scope,$rootScope,$http,$modal) {
+    app.controller("useredit", ['$scope', '$rootScope', '$http', '$modal', 'AuthData', function($scope,$rootScope,$http,$modal,AuthData) {
+        $rootScope.onViewPage = "blog";
+        $scope.user = AuthData.User;
+        $scope.category = AuthData.Category;
         $scope.content = '####这里将显示输入内容......';
         $scope.markcontent = '';
         //一段傻逼的jQuery代码:
@@ -309,6 +328,10 @@
             $(this).find('div').show();
         });
         //傻逼代码结束 QAQ
+        $scope.$on("getData", function() {
+            $scope.user = AuthData.User;
+            $scope.category = AuthData.Category;
+        });
         $scope.$watch("markcontent", function() {
             if($scope.markcontent === "") {
                 $scope.content = '####这里将显示输入内容......';
@@ -345,29 +368,48 @@
     }]);
 
     app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
-        $scope.selectPage = 'course';
-        $scope.user = AuthData.User;
-        $scope.category = AuthData.Category;
+        $rootScope.onViewPage = "course";
         $scope.photoSrc = './images/pic/bg.jpg';
         $scope.uplaodPhoto = function(){
             alert('上传图片成功!');
         };
     }]);
 
-
     app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
-        $scope.selectPage = 'setting';
+        $rootScope.onViewPage = "setting";
         $scope.user = AuthData.User;
         $scope.category = AuthData.Category;
+        $scope.s_infoSetting = 0;
+        $scope.s_cateSetting = 1;
+        $scope.newCateName = "";
         $scope.key = {
             password: '',
             newPassword: '',
             confirmPassword: '',
             motto: '结成明日奈'
         };
+        // $rootScope.fetchData();
+        $scope.$on("getData", function() {
+            $scope.user = AuthData.User;
+            $scope.category = AuthData.Category;
+        });
         $scope.confirmModify = function(){
             $scope.sending = 0;
             alert('修改成功！');
+        };
+        $scope.addCategory = function() {
+            //添加一个新的分类，返回新的分类信息，刷新视图
+            AuthData.addCategory($scope.newCateName).success(function (msg) {
+                if(msg['code'] == "0000") {
+
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function () {
+                alert("Network Error!");
+            });
+            alert("添加成功！");
         };
     }]);
 })()
