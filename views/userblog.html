@@ -1,11 +1,16 @@
 <div class="row">
     <div class="col-sm-3"><h3 class="text-left">Blog List</h3></div>
-    <div class="col-sm-2 col-sm-offset-7" ng-show="user.login"><h3><a href="#/views/useredit/new" class="btn btn-default" target="_blank"><span class="glyphicon glyphicon-pencil"></span>&nbsp;写博客</a></h3></div>
+    <div class="col-sm-2 col-sm-offset-7" ng-if="login"><h3><a href="#/views/useredit/new" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span>&nbsp;写博客</a></h3></div>
 </div>
 <hr>
 <div class="bloglist" ng-repeat="blog in blogs">
-    <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.id}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="blog.public||user.login" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
+    <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.id}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="!blog.public" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
     <p class="blog-introduce">{{blog.introduce}}</p>
-    <p class="text-right blog-footer"><small><span class="date">{{blog.postdate}}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-eye-open" aria-hidden="true"> </span>&nbsp;阅读:{{blog.views}}&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-edit" aria-hidden="true"> </span><a href="#/views/useredit/{{blog.id}}" target="_blank">&nbsp;编辑</a> &nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog()">&nbsp;删除</a></small></p>
+    <div class="blog-abstract-footer">
+		<p ng-if="login"><span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog()">&nbsp;删除</a></p>
+		<p ng-if="login"><span class="glyphicon glyphicon-edit" aria-hidden="true"> </span><a href="#/views/useredit/{{blog.id}}">&nbsp;编辑</a></p>
+		<p><span class="glyphicon glyphicon-eye-open" aria-hidden="true"> </span>&nbsp;阅读:{{blog.views}}</p>
+		<p class="date">{{blog.postdate}}</p>
+    </div>
     <hr>
 </div>
