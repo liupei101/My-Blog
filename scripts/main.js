@@ -216,7 +216,7 @@
         };
     }]);
 
-    app.controller("userSignIn", ['$scope', '$http', '$rootScope', '$window', '$modalInstance', 'AuthData', function($scope,$http,$rootScope,$window,$modalInstance,AuthData) {
+    app.controller("userSignIn", ['$scope', '$rootScope', '$window', '$modalInstance', 'AuthData', function($scope,$rootScope,$window,$modalInstance,AuthData) {
         $scope.loginForm = {
             name: '' ,
             password: ''
@@ -239,12 +239,12 @@
         };
     }]);
 
-    app.controller("userconfig", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("userconfig", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
         $rootScope.onViewPage = "home";
         
     }]);
     
-    app.controller("userblog", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("userblog", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
         $scope.login = $rootScope.Login;
         $rootScope.onViewPage = "blog";
         $scope.user = AuthData.User;
@@ -266,14 +266,14 @@
         });
     }]);
 
-    app.controller("categoryview", ['$scope', '$http', '$rootScope', '$routeParams', 'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
+    app.controller("categoryview", ['$scope', '$rootScope', '$routeParams', 'AuthData', function($scope,$rootScope,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.categoryID = $routeParams.id;
         
         //根据ID查询对应分类的所有文章
     }]);
 
-    app.controller("blogview", ['$scope', '$http', '$rootScope', '$routeParams' ,'AuthData', function($scope,$http,$rootScope,$routeParams,AuthData) {
+    app.controller("blogview", ['$scope', '$rootScope', '$routeParams' ,'AuthData', function($scope,$rootScope,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.user = AuthData.User;
         $scope.blogID = $routeParams.id;
@@ -312,7 +312,7 @@
 
     }]);
 
-    app.controller("useredit", ['$scope', '$rootScope', '$http', '$modal', 'AuthData', function($scope,$rootScope,$http,$modal,AuthData) {
+    app.controller("useredit", ['$scope', '$rootScope', '$modal', 'AuthData', function($scope,$rootScope,$modal,AuthData) {
         $rootScope.onViewPage = "edit";
         $scope.user = AuthData.User;
         $scope.category = AuthData.Category;
@@ -347,6 +347,7 @@
             }
             else {
                 $('#editor').show();
+                $scope.content = $scope.markcontent;
                 $scope.showPreview = 0;
             }
         };
@@ -363,7 +364,7 @@
         };
     }]);
 
-    app.controller("uploadimg", ['$scope', '$http', '$rootScope', '$modalInstance', function($scope,$http,$rootScope,$modalInstance) {
+    app.controller("uploadimg", ['$scope', '$rootScope', '$modalInstance', function($scope,$rootScope,$modalInstance) {
         $scope.imgUrl = "images/pic/2333.jpg";
         $scope.finished = 0;
         $scope.showHelps = 0;
@@ -377,7 +378,7 @@
         };
     }]);
 
-    app.controller("usercourse", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("usercourse", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
         $rootScope.onViewPage = "course";
         $scope.photoSrc = './images/pic/bg.jpg';
         $scope.login = $rootScope.Login;
@@ -389,7 +390,7 @@
         };
     }]);
 
-    app.controller("usersetting", ['$scope', '$http', '$rootScope', 'AuthData', function($scope,$http,$rootScope,AuthData) {
+    app.controller("usersetting", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
         $rootScope.onViewPage = "setting";
         $scope.user = AuthData.User;
         $scope.category = AuthData.Category;
