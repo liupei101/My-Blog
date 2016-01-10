@@ -430,7 +430,7 @@
             password: '',
             newPassword: '',
             confirmPassword: '',
-            motto: '结成明日奈'
+            motto: ''
         };
         $scope.login = $rootScope.Login;
         $scope.$watch("Login", function() {
@@ -440,12 +440,22 @@
             $scope.user = AuthData.User;
             $scope.category = AuthData.Category;
         });
-        $scope.confirmModify = function(){
-            $scope.sending = 0;
-            alert('修改成功！');
+
+        //文章分类管理的 增 删 改 操作
+        $scope.updateCategoryName = function(selectCateID, selectCateName, status) {
+            status = 0;
+            alert(selectCateID + " will be update to " + selectCateName);
+            //调用修改类别名 API
+        };
+        $scope.delectCategory = function(selectCateID) {
+            alert( selectCateID + " will be delect!");
+            //调用删除指定类别 API
+            //刷新视图
         };
         $scope.addCategory = function() {
-            //添加一个新的分类，返回新的分类信息，刷新视图
+            //输入检查
+            //添加一个新的分类
+            //得到更新后的视图
             AuthData.addCategory($scope.newCateName).success(function (msg) {
                 if(msg['code'] == "0000") {
 
@@ -457,6 +467,14 @@
                 alert("Network Error!");
             });
             alert("添加成功！");
+        };
+
+        //修改密码及个人信息操作
+        $scope.modifyInfo = function() {
+            //输入检查
+            //调用修改信息 API
+            //同步刷新视图(主要指刷新 头像 和 motto)
+            alert("修改成功！");
         };
     }]);
 })()

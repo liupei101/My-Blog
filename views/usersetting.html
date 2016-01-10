@@ -15,32 +15,32 @@
     <div class="row" ng-show="s_infoSetting">
         <fieldset>
             <div class="row form-group ">
-                <label class="control-label col-sm-4 col-md-3" for="password"><p class="text-right">old password</p></label>
-                <div class="col-sm-8 col-md-5">
-                  <input type="password" ng-model="key.password" id="password" ng-maxlength="50" ng-minlength="1" class="form-control input-sm ng-pristine ng-valid ng-valid-maxlength ng-valid-minlength">
+                <label class="control-label col-sm-6 col-md-4" for="password"><p class="text-right">old password</p></label>
+                <div class="col-sm-6 col-md-4">
+                  <input type="password" ng-model="key.password" id="password" ng-maxlength="50" ng-minlength="1" class="form-control input-sm">
                 </div>
             </div>
             <div class="row form-group ">
-                <label class="control-label col-sm-4 col-md-3" for="newpassword"><p class="text-right">new password</p></label>
-                <div class="col-sm-8 col-md-5">
-                  <input type="password" ng-model="key.newPassword" id="newpassword" ng-maxlength="50" ng-minlength="1" class="form-control input-sm ng-pristine ng-valid ng-valid-maxlength ng-valid-minlength">
+                <label class="control-label col-sm-6 col-md-4" for="newpassword"><p class="text-right">new password</p></label>
+                <div class="col-sm-6 col-md-4">
+                  <input type="password" ng-model="key.newPassword" id="newpassword" ng-maxlength="50" ng-minlength="1" class="form-control input-sm">
                 </div>
             </div>
             <div class="row form-group ">
-                <label class="control-label col-sm-4 col-md-3" for="confirmpassword"><p class="text-right">comfirm password</p></label>
-                <div class="col-sm-8 col-md-5">
-                  <input type="password" ng-model="key.confirmPassword" id="confirmpassword" ng-maxlength="50" ng-minlength="1" class="form-control input-sm ng-pristine ng-valid ng-valid-maxlength ng-valid-minlength">
+                <label class="control-label col-sm-6 col-md-4" for="confirmpassword"><p class="text-right">comfirm password</p></label>
+                <div class="col-sm-6 col-md-4">
+                  <input type="password" ng-model="key.confirmPassword" id="confirmpassword" ng-maxlength="50" ng-minlength="1" class="form-control input-sm">
                 </div>
             </div>
             <div class="row form-group ">
-                <label class="control-label col-sm-4 col-md-3" for="picture"><p class="text-right">picture</p></label>
-                <div class="col-sm-8 col-md-5">
+                <label class="control-label col-sm-6 col-md-4" for="picture"><p class="text-right">picture</p></label>
+                <div class="col-sm-6 col-md-4">
                   <input type="file" id="picture" class="form-control ">
                 </div>
             </div>
             <div class="row form-group ">
-                <label class="control-label col-sm-4 col-md-3" for="motto"><p class="text-right">Motto</p></label>
-                <div class="col-sm-8 col-md-5">
+                <label class="control-label col-sm-6 col-md-4" for="motto"><p class="text-right">Motto</p></label>
+                <div class="col-sm-6 col-md-4">
                   <textarea class="form-control" ng-model="key.motto" ng-maxlength="50" ng-minlength="1" rows="5"></textarea>
                 </div>
             </div>
@@ -53,21 +53,22 @@
             <thead>
                 <tr>
                   <th>#</th>
-                  <th>名称</th>
-                  <th>操作</th>
-                  <th>完成</th>
+                  <th class="text-center">名称</th>
+                  <th class="text-center">操作</th>
+                  <th>...</th>
                 </tr>
             </thead>
-            <tr ng-repeat="item in category">
+            <tr ng-repeat="item in category" ng-init="status_edit=0">
                 <th scope="row">{{$index}}</th>
                 <td>
-                    <input type="text" class="form-control" style="width:33%;" ng-model="item.name">
+                    <p class="text-center" ng-show="!status_edit">{{item.name}}</p>
+                    <p class="text-center"><input ng-show="status_edit" type="text" style="width:33%;" ng-model="item.name"></p>
                 </td>
                 <td>
-                    <p><a href="javascript:void(0)" ng-click="delectCate(item.id)">删除</a></p>
+                    <p class="text-center"><a href="javascript:void(0)" ng-click="delectCategory(item.id)">删除</a>&nbsp;|&nbsp;<a href="javascript:void(0)" ng-click="status_edit=1">编辑</a></p>
                 </td>
                 <td>
-                    <p><a href="javascript:void(0)" ng-click="updateCate(item.id)">确定</a></p>
+                    <p ng-show="status_edit"><a href="javascript:void(0)" ng-click="updateCategoryName(item.id, item.name, status_edit=0)">确定</a></p>
                 </td>
             </tr>
         </table>
