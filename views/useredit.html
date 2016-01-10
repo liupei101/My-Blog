@@ -6,21 +6,19 @@
 <div class="row">
     <div class="col-lg-12 box-l">
         <div class="input-group lg-input">
-            <span class="input-group-addon" id="basic-addon1">标题</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="标题" ng-model="newBlog.title">
         </div>
         <div class="input-group sm-input" role="group">
-            <span class="input-group-addon">类别</span>
-            <select class="form-control">
-                <option value="0" selected="selected">Male</option>
-                <option value="1">Female</option>
+            <select class="form-control" ng-model="newBlog.cateid">
+                <option value="0" selected="selected">类别</option>
+                <option value="{{item.id}}" ng-repeat="item in category">{{item.name}}</option>
             </select>
         </div>
         <div class="input-group sm-input" role="group">
-            <span class="input-group-addon">公开</span>
-            <select class="form-control">
-                <option value="1" selected="selected">YES</option>
-                <option value="0">NO</option>
+            <select class="form-control" ng-model="newBlog.public">
+                <option value="0" selected="selected">公开</option>
+                <option value="1">YES</option>
+                <option value="2">NO</option>
             </select>
         </div>
         <div class="btn-group nav-r" role="group">

@@ -254,26 +254,38 @@
         $scope.$on("getData", function() {
             $scope.user = AuthData.User;
         });
-        AuthData.userBlogList().success(function (data) {
-            if(data['code'] === '0000') {
-                $scope.blogs = data['blogs'];
-            }
-            else {
-                alert(data['errorMsg']);
-            }
-        }).error(function () {
-            alert("Network Error!");
-        });
+        //得到所有文章列表
+        var getBlogList = function() {
+            AuthData.userBlogList().success(function (data) {
+                if(data['code'] === '0000') {
+                    $scope.blogs = data['blogs'];
+                }
+                else {
+                    alert(data['errorMsg']);
+                }
+            }).error(function () {
+                alert("Network Error!");
+            });
+        };
+        getBlogList();
+        //删除文章的功能
+        $scope.delectBlog = function (blogID) {
+            alert(blogID + " will be delect!");
+            //调用删除文章的API
+            //重新请求文章列表
+            getBlogList();
+        };
     }]);
 
     app.controller("categoryview", ['$scope', '$rootScope', '$routeParams', 'AuthData', function($scope,$rootScope,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.categoryID = $routeParams.id;
         
-        //根据ID查询对应分类的所有文章
+        //根据分类的ID查询对应分类的所有文章
+
     }]);
 
-    app.controller("blogview", ['$scope', '$rootScope', '$routeParams' ,'AuthData', function($scope,$rootScope,$routeParams,AuthData) {
+    app.controller("blogview", ['$scope', '$rootScope', '$window', '$routeParams' ,'AuthData', function($scope,$rootScope,$window,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.user = AuthData.User;
         $scope.blogID = $routeParams.id;
@@ -309,6 +321,14 @@
         }).error(function () {
             alert("Network Error!");
         });
+        //删除$scope.blogID 对应文章
+        $scope.delectBlog = function () {
+            alert($scope.blogID + " will be delect!");
+            //调用删除文章的API
+            
+            //删除完成后回退到 blog 页面
+            $window.location.replace('#/views/blog');
+        };
 
     }]);
 
@@ -319,6 +339,12 @@
         $scope.content = '';
         $scope.markcontent = '';
         $scope.showPreview = 0;
+        $scope.newBlog = {
+            "title" : "",
+            "cateid" : "0",
+            "public" : 0 , 
+            "detail" : ""
+        };
         //一段傻逼的jQuery代码:
         var x = $('.modal-helps');
         x.find("li").find('div').hide();
@@ -352,9 +378,12 @@
             }
         };
         $scope.postArticle = function() {
+            $scope.newBlog.detail = $scope.content;
+            console.log($scope.newBlog);
+            //一些错误检查 
             //调用发表文章API
             alert("发表成功");
-            //跳转至对应文章页面
+            //返回新发表文章的ID  跳转至对应文章页面
         };
         $scope.insertImg = function() {
             $modal.open({
