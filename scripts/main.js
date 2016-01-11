@@ -99,6 +99,18 @@
         };
         return {
             //params传入为数组对象形式
+            /*
+            defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
+            login: function(params) {return doRequest('/api/user/login','post',params);} ,
+            logout: function() {return doRequest('/api/user/logout','get','');} ,
+            userData: function(params) {return doRequest('/api/user/info','post',params);} ,
+            userBlogList: function() {return doRequest('/api/article/all','get','');} ,
+            userBlogDetail: function(params) {return doRequest('api/article/detail','post','');} ,
+            userCategory: function() {return doRequest('/api/category/all','get','');} ,
+            similarBlog: function(params) {return doRequest('/api/category/similar','post','');} ,
+            addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
+            userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
+            */
             defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
             login: function(params) {return doRequest('/json/login.json','get',params);} ,
             logout: function() {return doRequest('/json/logout.json','get','');} ,
@@ -109,7 +121,6 @@
             similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
             addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
             userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
-            setUser: function(newUser) { User = newUser;} ,
             User,
             Category,
             DEBUG
