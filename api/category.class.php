@@ -26,6 +26,17 @@ class CLCategory {
         return '0000'.json_encode($res);
 	}
 	/**
+	 * get a category by id function
+     *
+	 * @return string (code, data)
+	 */
+	static public function getCategoryByID($cateID) {
+		$sqlCate = @mysql_query('SELECT cname FROM category WHERE cid = "'.$cateID.'";' );
+		if($sqlCate === false) return ERROR_SYSTEM.'System error';
+		$cateName = @mysql_fetch_assoc($sqlCate);
+        return '0000'.$cateName['cname'];
+	}
+	/**
 	 * add new category
      * 
 	 *

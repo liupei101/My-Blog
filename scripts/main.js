@@ -88,24 +88,25 @@
             //params传入为数组对象形式
             
             // defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
-            // login: function(params) {return doRequest('/api/user/login','post',params);} ,
-            // logout: function() {return doRequest('/api/user/logout','get','');} ,
+            login: function(params) {return doRequest('api/user/login','post',params);} ,
+            logout: function() {return doRequest('api/user/logout','get','');} ,
             userData: function(params) {return doRequest('api/user/info','post',params);} ,
             userBlogList: function() {return doRequest('api/article/all','get','');} ,
             userBlogDetail: function(params) {return doRequest('api/article/detail','post',params);} ,
             userCategory: function() {return doRequest('api/category/all','get','');} ,
-            // similarBlog: function(params) {return doRequest('/api/category/similar','post','');} ,
+            similarBlog: function(params) {return doRequest('api/article/similar','post',params);} ,
+            similarBlogList: function(params) {return doRequest('api/article/similarlist','post',params);} ,
             // addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
             // userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
             // 
             defaultSetting: function() {return doRequest('api/site/config','get','');} ,
-            login: function(params) {return doRequest('/json/login.json','get',params);} ,
-            logout: function() {return doRequest('/json/logout.json','get','');} ,
+            // login: function(params) {return doRequest('/json/login.json','get',params);} ,
+            // logout: function() {return doRequest('/json/logout.json','get','');} ,
             // userData: function(params) {return doRequest('/json/user.json','get',params);} ,
             // userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
             // userBlogDetail: function(params) {return doRequest('json/blogdetail.json','get','');} ,
             // userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
-            similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
+            // similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
             addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
             userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
             User,
@@ -133,7 +134,6 @@
             AuthData.userData(user).success(function (msg) {
                 if(msg['code'] = "0000") {
                     AuthData.User = msg.data;
-                    console.log(AuthData.User);
                     //每次刷新时获取到登录信息
                     $rootScope.Login = AuthData.User.login;
                 }
@@ -232,6 +232,7 @@
                 else {
                     $rootScope.$broadcast('updateUserData');//更新site视图数据
                     $modalInstance.close();
+                    $window.location.replace('#/');
                 }
             }).error(function () {
                 alert("Network Error!");
@@ -262,6 +263,12 @@
             AuthData.userBlogList().success(function (msg) {
                 if(msg['code'] === '0000') {
                     $scope.blogs = msg['data'];
+                    for(var i = 0;i < $scope.blogs.length;i ++) {
+                        var tmpStr = $scope.blogs[i]['content'];
+                        if(tmpStr.length > 150) {
+                            $scope.blogs[i]['content'] = tmpStr.substring(0, 150);
+                        }
+                    }
                 }
                 else {
                     alert(msg['errorMsg']);
@@ -283,9 +290,31 @@
     app.controller("categoryview", ['$scope', '$rootScope', '$routeParams', 'AuthData', function($scope,$rootScope,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.categoryID = $routeParams.id;
-        
+        var qy = {
+            cateID : $routeParams.id
+        };
+        $scope.user = AuthData.User;
+        $scope.$watch("Login", function() {
+            $scope.login = $rootScope.Login;
+        });
+        $scope.$on("getData", function() {
+            $scope.user = AuthData.User;
+        });
         //根据分类的ID查询对应分类的所有文章
-
+        AuthData.similarBlog(qy).success(function (msg) {
+            if(msg['code'] == "0000") {
+                $scope.blogs = msg['data'];
+                for(var i = 0;i < $scope.blogs.length;i ++) {
+                    var tmpStr = $scope.blogs[i]['content'];
+                    if(tmpStr.length > 150) {
+                        $scope.blogs[i]['content'] = tmpStr.substring(0, 150);
+                    }
+                }
+            }
+            else alert(msg['errorMsg']);
+        }).error(function () {
+            alert("Network error!");
+        });
     }]);
 
     app.controller("blogview", ['$scope', '$rootScope', '$window', '$routeParams' ,'AuthData', function($scope,$rootScope,$window,$routeParams,AuthData) {
@@ -294,8 +323,8 @@
         $scope.blogID = {
             aid : $routeParams.id
         };
-        $scope.cateID = {
-            cid : ''
+        $scope.cate = {
+            cateID : ''
         };
         $scope.content = '';
         $scope.login = $rootScope.Login;
@@ -310,7 +339,18 @@
             if(msg['code'] === '0000') {
                 $scope.blogDetail = msg['data'];
                 $scope.content = $scope.blogDetail.content;
-                $scope.cateID.aid = $scope.blogDetail.cateid;
+                $scope.cate.cateID = $scope.blogDetail.cateid;
+                //查询同类文章的所有信息
+                AuthData.similarBlogList($scope.cate).success(function (msg) {
+                    if(msg['code'] = "0000") {
+                        $scope.BlogSimilar = msg['data'];
+                    }
+                    else {
+                        alert(msg['errorMsg']);
+                    }
+                }).error(function () {
+                    alert("Network Error!");
+                });
             }
             else {
                 alert(msg['msg']);
@@ -318,17 +358,7 @@
         }).error(function() {
             alert("Network Error!");
         });
-        //查询同类文章的所有信息
-        AuthData.similarBlog($scope.cateID).success(function (msg) {
-            if(msg['code'] = "0000") {
-                $scope.BlogSimilar = msg['data'];
-            }
-            else {
-                alert(msg['errorMsg']);
-            }
-        }).error(function () {
-            alert("Network Error!");
-        });
+        
         //删除$scope.blogID 对应文章
         $scope.delectBlog = function () {
             alert($scope.blogID + " will be delect!");

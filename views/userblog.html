@@ -4,7 +4,7 @@
 </div>
 <hr>
 <div class="bloglist" ng-repeat="blog in blogs">
-    <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.aid}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="login" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
+    <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.aid}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="blog.public === '0'" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
     <p class="blog-introduce">{{blog.content}}</p>
     <div class="blog-abstract-footer">
 		<p ng-if="login"><span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog(blog.aid)">&nbsp;删除</a></p>

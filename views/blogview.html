@@ -4,34 +4,34 @@
 </div>
 <hr>
 <p class="blogview-title">
-    <span ng-show="!blogDetail.public" class="glyphicon glyphicon-lock" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blogDetail.aid}}">{{blogDetail.title}}</a>
+    <span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;<a href="#/views/blogview/{{blogDetail.aid}}">{{blogDetail.title}}</a>&nbsp;&nbsp;<span ng-show="blogDetail.public === '0'" class="glyphicon glyphicon-lock" aria-hidden="true"> </span>
 </p>
 <div class="blog-detail-footer">
         <p ng-if="login"><span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog()">&nbsp;删除</a></p>
         <p ng-if="login"><span class="glyphicon glyphicon-edit" aria-hidden="true"> </span><a href="#/views/useredit/{{blogDetail.aid}}">&nbsp;编辑</a></p>
         <p><span class="glyphicon glyphicon-eye-open" aria-hidden="true"> </span>&nbsp;阅读:{{blogDetail.views}}</p>
         <p class="date">{{blogDetail.postdate}}</p>
-    </div>
+</div>
 <hr>
 <markdown content="content"></markdown>
 <hr>
 <!-- 显示同类文章 -->
 <h4>同类文章: </h4>
-<div class="similar_c">
+<div class="similar_c" ng-show="BlogSimilar.content.length > 0">
     <div class="similar_c_t">
-        <label class="similar_cur" style="cursor:pointer">{{BlogSimilar.name}}&nbsp;&nbsp;<em>({{BlogSimilar.count}})</em></label>
+        <label class="similar_cur" style="cursor:pointer">{{BlogSimilar.cname}}&nbsp;&nbsp;<em>({{BlogSimilar.content.length}})</em></label>
     </div>
     <div class="similar_wrap">
         <ul class="similar_list fl">
-            <li ng-repeat="blog in BlogSimilar.content" ng-show="blog.public||user.login">
+            <li ng-repeat="blog in BlogSimilar.content" ng-if="$index%2 == 0">
                 <em>•</em>
-                <a href="#/views/blogview/{{blog.id}}">{{blog.title}}</a>
+                <a href="#/views/blogview/{{blog.aid}}">{{blog.title}}</a>
             </li>
         </ul>
         <ul class="similar_list fr">
-            <li ng-repeat="blog in BlogSimilar.content" ng-show="blog.public||user.login">
+            <li ng-repeat="blog in BlogSimilar.content" ng-if="$index%2 == 1">
                 <em>•</em>
-                <a href="#/views/blogview/{{blog.id}}">{{blog.title}}</a>
+                <a href="#/views/blogview/{{blog.aid}}">{{blog.title}}</a>
             </li>
         </ul>
     </div>

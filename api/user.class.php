@@ -29,11 +29,10 @@ class CLUser {
      * @return string (code, data)
      */
     static public function userLogin($userName, $password) {
-        $sqlUser = @mysql_query('SELECT `uid` FROM `user` WHERE `name` = "'.$userName.'" AND `password` = "'.$password.'";');
+        $sqlUser = @mysql_query('SELECT uid FROM user WHERE name = "'.$userName.'" AND password = "'.$password.'";');
         if($sqlUser === false) return ERROR_SYSTEM.'System error';
         if(@mysql_num_rows($sqlUser) !== 1) return ERROR_INPUT.'no such user!';
         if(($user = @mysql_fetch_assoc($sqlUser)) === false) return ERROR_SYSTEM.'System error.';
-        $_SESSION['login'] = 1;
         return "0000";
     }
     /**
@@ -42,7 +41,7 @@ class CLUser {
      * @return string (code, data) 
      */
     static public function userLogout() {
-        unset($_SESSION['login']);
+        return "0000";
     }
 }
 ?>
