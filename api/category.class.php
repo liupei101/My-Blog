@@ -16,12 +16,14 @@ class CLCategory {
      *
 	 * @return string (code, data)
 	 */
-	public function getAllCategory() {
-		$sqlCate = @mysql_query('SELECT `cid`, `cname` FROM `category`;' );
+	static public function getAllCategory() {
+		$res = [];
+		$sqlCate = @mysql_query('SELECT cid, cname FROM category;' );
 		if($sqlCate === false) return ERROR_SYSTEM.'System error';
-        if(@mysql_num_rows($sqlCate) === 0) return ERROR_INPUT.'no such category!';
-        if(($category = @mysql_fetch_assoc($sqlCate)) === false) return ERROR_SYSTEM.'System error.';
-        return '0000'.json_encode($category);
+		while(($line = @mysql_fetch_assoc($sqlCate)) !== false) {
+			array_push($res, $line);
+		}
+        return '0000'.json_encode($res);
 	}
 	/**
 	 * add new category

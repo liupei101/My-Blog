@@ -12,19 +12,6 @@
         return false;
     }
     var app = angular.module('app', ['ngRoute', 'ui.bootstrap']);
-    
-    app.config(['$httpProvider', function($httpProvider){
-        $httpProvider.defaults.transformRequest = function(obj){
-            var str = [];
-            for(var p in obj){
-                str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-            }
-            return str.join('&');
-        }
-        $httpProvider.defaults.headers.post = {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        }
-    }]);
 
     app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         // $locationProvider.html5Mode(true);
@@ -92,32 +79,32 @@
         var DEBUG = 1;
         var doRequest = function (path, way, params) {
             return $http({
-                url: path,
+                url: "api/index.php?" + path,
                 method: way,
                 data: params
             });
         };
         return {
             //params传入为数组对象形式
-            /*
-            defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
-            login: function(params) {return doRequest('/api/user/login','post',params);} ,
-            logout: function() {return doRequest('/api/user/logout','get','');} ,
-            userData: function(params) {return doRequest('/api/user/info','post',params);} ,
-            userBlogList: function() {return doRequest('/api/article/all','get','');} ,
-            userBlogDetail: function(params) {return doRequest('api/article/detail','post','');} ,
-            userCategory: function() {return doRequest('/api/category/all','get','');} ,
-            similarBlog: function(params) {return doRequest('/api/category/similar','post','');} ,
-            addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
-            userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
-            */
-            defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
+            
+            // defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
+            // login: function(params) {return doRequest('/api/user/login','post',params);} ,
+            // logout: function() {return doRequest('/api/user/logout','get','');} ,
+            userData: function(params) {return doRequest('api/user/info','post',params);} ,
+            userBlogList: function() {return doRequest('api/article/all','get','');} ,
+            userBlogDetail: function(params) {return doRequest('api/article/detail','post',params);} ,
+            userCategory: function() {return doRequest('api/category/all','get','');} ,
+            // similarBlog: function(params) {return doRequest('/api/category/similar','post','');} ,
+            // addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
+            // userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
+            // 
+            defaultSetting: function() {return doRequest('api/site/config','get','');} ,
             login: function(params) {return doRequest('/json/login.json','get',params);} ,
             logout: function() {return doRequest('/json/logout.json','get','');} ,
-            userData: function(params) {return doRequest('/json/user.json','get',params);} ,
-            userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
-            userBlogDetail: function(params) {return doRequest('json/blogdetail.json','get','');} ,
-            userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
+            // userData: function(params) {return doRequest('/json/user.json','get',params);} ,
+            // userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
+            // userBlogDetail: function(params) {return doRequest('json/blogdetail.json','get','');} ,
+            // userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
             similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
             addCategory: function(params) {return doRequest('/json/newcategory.json','get','');} ,
             userModifyPassword: function(params) {return doRequest('/api/user/usermodifypassword','post',params);} ,
@@ -140,9 +127,13 @@
         $rootScope.Login = 0 ;
         $rootScope.onViewPage = "home";
         var getAuthData = function(admin) {
-            AuthData.userData(admin).success(function (msg) {
+            var user = {
+                "user" : admin
+            };
+            AuthData.userData(user).success(function (msg) {
                 if(msg['code'] = "0000") {
                     AuthData.User = msg.data;
+                    console.log(AuthData.User);
                     //每次刷新时获取到登录信息
                     $rootScope.Login = AuthData.User.login;
                 }
@@ -155,7 +146,8 @@
             //得到文章分类信息
             AuthData.userCategory(admin).success(function (msg) {
                 if(msg['code'] = "0000") {
-                    AuthData.Category = msg['data'];
+                    AuthData.Category = msg.data;
+                    console.log(AuthData.Category);
                     //刷新时同步显示信息
                     $rootScope.$broadcast("getData");
                 }
@@ -267,12 +259,12 @@
         });
         //得到所有文章列表
         var getBlogList = function() {
-            AuthData.userBlogList().success(function (data) {
-                if(data['code'] === '0000') {
-                    $scope.blogs = data['blogs'];
+            AuthData.userBlogList().success(function (msg) {
+                if(msg['code'] === '0000') {
+                    $scope.blogs = msg['data'];
                 }
                 else {
-                    alert(data['errorMsg']);
+                    alert(msg['errorMsg']);
                 }
             }).error(function () {
                 alert("Network Error!");
@@ -299,7 +291,12 @@
     app.controller("blogview", ['$scope', '$rootScope', '$window', '$routeParams' ,'AuthData', function($scope,$rootScope,$window,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.user = AuthData.User;
-        $scope.blogID = $routeParams.id;
+        $scope.blogID = {
+            aid : $routeParams.id
+        };
+        $scope.cateID = {
+            cid : ''
+        };
         $scope.content = '';
         $scope.login = $rootScope.Login;
         $scope.$watch("Login", function() {
@@ -313,7 +310,7 @@
             if(msg['code'] === '0000') {
                 $scope.blogDetail = msg['data'];
                 $scope.content = $scope.blogDetail.content;
-                $scope.cateID = $scope.blogDetail.cateid;
+                $scope.cateID.aid = $scope.blogDetail.cateid;
             }
             else {
                 alert(msg['msg']);

@@ -13,45 +13,16 @@ require_once('user.class.php');
  */
 class CLSite {
 	/**
-     * getCurrentSession
-     * 
-     * @return string current user's information in session with json
-     */
-    public function getCurrentSession() {
-        $status = isset($_SESSION['user']['login']) ? $_SESSION['user']['login'] : '0';
-        if($status === '1') {
-            $current = new USER($_SESSION['user']['name'], $_SESSION['user']['login']);
-            $current->writeInSession();
-        }
-        else {
-            self::clearCurrentSession();
-        }
-        return json_encode($_SESSION['user']);
-    }
-    /**
-     * clearCurrentSession
-     * 
-     * use this function to unset session
-     * 
-     * @return string '0000' (success code)
-     */
-    public function clearCurrentSession() {
-        $_SESSION['user']['login'] = '0';
-        unset($_SESSION['user']['uid']);
-        return '0000';
-    }
-    /**
-     * check current user's level
+     * get site config file function
      *
-     * @param int $level
-     *
-     * @return bool
+     * @return string(code, data)
      */
-    public function hasPermission($level) {
-        CLSite::getCurrentSession();
-        if($_SESSION['user']['login'] === '0') return false;
-        if($_SESSION['user']['level'] < $level) return false;
-        return true;
+    static public function siteConfig() {
+        $sql = @mysql_query('SELECT * FROM `site`;');
+        if($sql === false) return ERROR_SYSTEM.'System error.';
+        if(@mysql_num_rows($sql) === 0) return ERROR_SYSTEM.'System error.';
+        if(($config = @mysql_fetch_assoc($sql)) === false) return ERROR_SYSTEM.'System error.';
+        return '0000'.json_encode($config);
     }
 }
 ?>

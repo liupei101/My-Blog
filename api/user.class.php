@@ -16,8 +16,8 @@ class CLUser {
      * 
      * @return string (code, data)
      */
-    public function getUserInfo($userID) {
-        $sqlUser = @mysql_query('SELECT `uid`, `name`, `lastvisit`, `motto`, `imgdir`, `views` FROM `user` WHERE `uid` = "'.$userID.'";');
+    static public function getUserInfo($userName) {
+        $sqlUser = @mysql_query('SELECT user.uid, user.name, user.lastvisit, user.motto, user.views , picdir.imgdir FROM `user` , `picdir` WHERE user.name = "'.$userName.'" AND picdir.pid = user.imgdir_id;');
         if($sqlUser === false) return ERROR_SYSTEM.'System error';
         if(@mysql_num_rows($sqlUser) !== 1) return ERROR_INPUT.'no such user!';
         if(($user = @mysql_fetch_assoc($sqlUser)) === false) return ERROR_SYSTEM.'System error.';
@@ -28,7 +28,7 @@ class CLUser {
      * 
      * @return string (code, data)
      */
-    public function userLogin($userName, $password) {
+    static public function userLogin($userName, $password) {
         $sqlUser = @mysql_query('SELECT `uid` FROM `user` WHERE `name` = "'.$userName.'" AND `password` = "'.$password.'";');
         if($sqlUser === false) return ERROR_SYSTEM.'System error';
         if(@mysql_num_rows($sqlUser) !== 1) return ERROR_INPUT.'no such user!';
@@ -41,7 +41,7 @@ class CLUser {
      * 
      * @return string (code, data) 
      */
-    public function userLogout() {
+    static public function userLogout() {
         unset($_SESSION['login']);
     }
 }
