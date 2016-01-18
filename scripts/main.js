@@ -85,21 +85,12 @@
             });
         };
         return {
-            //params传入为数组对象形式
-            
-            // defaultSetting: function() {return doRequest('/json/default.json','get','');} ,
             login: function(params)           {return doRequest('api/user/login','post',params);} ,
             logout: function()                {return doRequest('api/user/logout','get','');} ,
             userData: function(params)        {return doRequest('api/user/info','post',params);} ,
             ModifyPassword: function(params)  {return doRequest('api/user/modifyinfo','post',params);} ,
             defaultSetting: function()        {return doRequest('api/site/config','get','');} ,
-            // login: function(params) {return doRequest('/json/login.json','get',params);} ,
-            // logout: function() {return doRequest('/json/logout.json','get','');} ,
-            // userData: function(params) {return doRequest('/json/user.json','get',params);} ,
-            // userBlogList: function() {return doRequest('/json/blogs.json','get','');} ,
-            // userBlogDetail: function(params) {return doRequest('json/blogdetail.json','get','');} ,
-            // userCategory: function(params) {return doRequest('/json/category.json','get','');} ,
-            // similarBlog: function(params) {return doRequest('/json/similar.json','get','');} ,
+
             userCategory: function()         {return doRequest('api/category/all','get','');} ,
             addCategory: function(params)    {return doRequest('api/category/new','post',params);} ,
             delectCategory: function(params) {return doRequest('api/category/delect','post',params);} ,
@@ -112,6 +103,7 @@
             addArticle: function(params)     {return doRequest('api/article/new','post',params);} ,
             delectArticle: function(params)  {return doRequest('api/article/delect','post',params);} ,
             modifyArticle: function(params)  {return doRequest('api/article/modify','post',params);} ,
+            
             User,
             Category,
             DEBUG
