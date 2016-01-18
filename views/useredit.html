@@ -10,15 +10,15 @@
         </div>
         <div class="input-group sm-input" role="group">
             <select class="form-control" ng-model="newBlog.cateid">
-                <option value="0" selected="selected">类别</option>
-                <option value="{{item.id}}" ng-repeat="item in category">{{item.name}}</option>
+                <option value="null" selected="selected">类别</option>
+                <option value="{{item.cid}}" ng-repeat="item in category"><span style="color: #3C3C3C">{{item.cname}}<span></option>
             </select>
         </div>
         <div class="input-group sm-input" role="group">
             <select class="form-control" ng-model="newBlog.public">
-                <option value="0" selected="selected">公开</option>
+                <option value="null" selected="selected">公开</option>
                 <option value="1">YES</option>
-                <option value="2">NO</option>
+                <option value="0">NO</option>
             </select>
         </div>
         <div class="btn-group nav-r" role="group">

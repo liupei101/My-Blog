@@ -110,7 +110,25 @@ class CLArticle {
 		}
         return '0000'.json_encode($article);
 	}
-
+	/**
+	 * add Article function
+	 *
+	 * @return string (code, data)
+	 */
+	static public function addArticle($title, $public, $postdate, $cateid, $content) {
+		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
+		$sqlArticle = @mysql_query('INSERT INTO article SET title = "'.$title.'", public = "'.$public.'", postdate = "'.$postdate.'", cateid = "'.$cateid.'", content = "'.$content.'";');
+		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
+		//查询数据库中aid字段最大值, 并返回
+	}
+	/**
+	 * update Article function
+	 * 
+	 * @return string (code, data)
+	 */
+	static public function updateArticle() {
+		
+	}
 	//@next文章的增 删 改 操作
 }
 ?>

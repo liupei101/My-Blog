@@ -365,7 +365,7 @@
 
     }]);
 
-    app.controller("useredit", ['$scope', '$rootScope', '$modal', 'AuthData', function($scope,$rootScope,$modal,AuthData) {
+    app.controller("useredit", ['$scope', '$rootScope', '$modal', '$window', '$routeParams' , 'AuthData', function($scope,$rootScope,$modal,$window,$routeParams,AuthData) {
         $rootScope.onViewPage = "edit";
         $scope.user = AuthData.User;
         $scope.category = AuthData.Category;
@@ -374,8 +374,8 @@
         $scope.showPreview = 0;
         $scope.newBlog = {
             "title" : "",
-            "cateid" : "0",
-            "public" : 0 , 
+            "cateid" : "null",
+            "public" : "null" , 
             "detail" : ""
         };
         //一段傻逼的jQuery代码:
@@ -390,6 +390,7 @@
             $(this).find('div').show();
         });
         //傻逼代码结束 QAQ
+
         $scope.login = $rootScope.Login;
         $scope.$watch("Login", function() {
             $scope.login = $rootScope.Login;
@@ -397,7 +398,29 @@
         $scope.$on("getData", function() {
             $scope.user = AuthData.User;
             $scope.category = AuthData.Category;
+            // console.log($scope.category);
         });
+        $scope.fetchArticle = function() {
+            if($routeParams.id !== "new"){
+                var param = {
+                    aid : $routeParams.id
+                };
+                AuthData.userBlogDetail(param).success(function (msg) {
+                    if(msg['code'] === "0000") {
+                        $scope.newBlog.title = msg['data']['title'];
+                        $scope.newBlog.cateid = msg['data']['cateid'];
+                        $scope.newBlog.public = msg['data']['public'];
+                        $scope.newBlog.detail = msg['data']['content'];
+                        $scope.newBlog.aid = msg['data']['aid'];
+                        $scope.markcontent = $scope.newBlog.detail;
+                    }
+                    else alert(msg['errorMsg']);
+                }).error(function () {
+                    alert("Network Error!");
+                });
+            } 
+        };
+        $scope.fetchArticle(); //判断预填入文章
         $scope.switchView = function() {
             if(!$scope.showPreview) {
                 $('#editor').hide();
@@ -411,12 +434,47 @@
             }
         };
         $scope.postArticle = function() {
+            $scope.content = $scope.markcontent;
             $scope.newBlog.detail = $scope.content;
             console.log($scope.newBlog);
-            //一些错误检查 
-            //调用发表文章API
-            alert("发表成功");
-            //返回新发表文章的ID  跳转至对应文章页面
+            if($scope.newBlog.title.length == 0) {
+                alert("请输入文章标题！");
+                return ;
+            }
+            if($scope.newBlog.cateid === "null") {
+                alert("请选择文章类别！");
+                return ;
+            }
+            if($scope.newBlog.public === "null") {
+                alert("请设置文章权限！");
+                return ;
+            }
+            if($scope.newBlog.detail.length < 50) {
+                alert("内容太单调了，多写点吧！");
+                return ;
+            }
+            if($routeParams.id === "new") {
+                AuthData.addArticle($scope.newBlog).success(function (msg) {
+                    if(msg['code'] === "0000") {
+                        $window.location.replace('#/views/blogview/' + msg['data']['aid']);
+                        // alert("发表成功");
+                    }
+                    else alert(msg['errorMsg']);
+                }).error(function() {
+                    alert("Network Error!");
+                });
+            }
+            else {
+                AuthData.modifyArticle($scope.newBlog).success(function (msg) {
+                    if(msg['code'] === "0000") {
+                        $window.location.replace('#/views/blogview/' + msg['data']['aid']);
+                        //返回新发表文章的ID  跳转至对应文章页面
+                    }
+                    else alert(msg['errorMsg']);
+                }).error(function() {
+                    alert("Network Error!");
+                });
+            }
         };
         $scope.insertImg = function() {
             $modal.open({

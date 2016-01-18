@@ -40,7 +40,14 @@ switch ($action[2]) {
         	else ERROR(substr($similarCateArticles, 0, 4), substr($similarCateArticles, 4));
         }
         else ERROR(substr($cateName, 0, 4), substr($cateName, 4));
+        break;
 
+    case 'new':
+        //新增文章
+        break;
+    case 'modify':
+        //修改文章
+        break;
 	default:
 		# code...
 		break;
