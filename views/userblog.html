@@ -7,10 +7,27 @@
     <p class="blog-title"><span class="glyphicon glyphicon-th-list" aria-hidden="true"> </span>&nbsp;&nbsp;<a href="#/views/blogview/{{blog.aid}}">{{blog.title}}</a>&nbsp;&nbsp;<small><span ng-show="blog.public === '0'" class="glyphicon glyphicon-lock" aria-hidden="true"> </span></small></p>
     <p class="blog-introduce">{{blog.content}}</p>
     <div class="blog-abstract-footer">
-		<p ng-if="login"><span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="delectBlog(blog.aid)">&nbsp;删除</a></p>
+		<p ng-if="login"><span class="glyphicon glyphicon-trash" aria-hidden="true"> </span><a href="javascript:void(0)" ng-click="showWarningWithID(blog.aid)">&nbsp;删除</a></p>
 		<p ng-if="login"><span class="glyphicon glyphicon-edit" aria-hidden="true"> </span><a href="#/views/useredit/{{blog.aid}}">&nbsp;编辑</a></p>
 		<p><span class="glyphicon glyphicon-eye-open" aria-hidden="true"> </span>&nbsp;阅读:{{blog.views}}</p>
 		<p class="date">{{blog.postdate}}</p>
     </div>
     <hr>
+</div>
+
+<!--删除文章提醒框-->
+<div class="modal-warning" ng-hide="!showWarning">
+<div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="showWarning=!showWarning"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;提醒</h4>
+        </div>
+        <div class="modal-body">
+            <h4>这篇文章即将被删除！点击确定继续！</h4>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" ng-click="deleteBlog()">确定</button>
+            <button class="btn btn-success" ng-click="showWarning=!showWarning">取消</button>
+        </div>
+</div><!-- /.modal -->
 </div>

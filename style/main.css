@@ -258,6 +258,12 @@ textarea, textarea:hover, textarea:focus, textarea:active {
     margin-left: 20px;
 }
 /*帮助框设置*/
+.modal-warning {
+    width: 50%;
+    position: absolute;
+    left: 25%;
+    top: 35%;
+}
 .modal-helps {
     width: 50%;
     position: absolute;

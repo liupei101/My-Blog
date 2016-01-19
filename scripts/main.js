@@ -93,7 +93,7 @@
 
             userCategory: function()         {return doRequest('api/category/all','get','');} ,
             addCategory: function(params)    {return doRequest('api/category/new','post',params);} ,
-            delectCategory: function(params) {return doRequest('api/category/delect','post',params);} ,
+            deleteCategory: function(params) {return doRequest('api/category/delete','post',params);} ,
             modifyCategory: function(params) {return doRequest('api/category/modify','post',params);} ,
 
             userBlogList: function()         {return doRequest('api/article/all','get','');} ,
@@ -101,7 +101,7 @@
             similarBlog: function(params)    {return doRequest('api/article/similar','post',params);} ,
             similarBlogList: function(params){return doRequest('api/article/similarlist','post',params);} ,
             addArticle: function(params)     {return doRequest('api/article/new','post',params);} ,
-            delectArticle: function(params)  {return doRequest('api/article/delect','post',params);} ,
+            deleteArticle: function(params)  {return doRequest('api/article/delete','post',params);} ,
             modifyArticle: function(params)  {return doRequest('api/article/modify','post',params);} ,
             
             User,
@@ -273,12 +273,26 @@
             });
         };
         getBlogList();
-        //删除文章的功能
-        $scope.delectBlog = function (blogID) {
-            alert(blogID + " will be delect!");
-            //调用删除文章的API
-            //重新请求文章列表
-            getBlogList();
+
+        //删除$scope.blogID 对应文章
+        $scope.showWarning = false;
+        $scope.showWarningWithID = function(blogAid) {
+            $scope.showWarning = true;
+            $scope.blogAid = blogAid;
+        }
+        $scope.deleteBlog = function () {
+            var param = {
+                aid: $scope.blogAid
+            };
+            AuthData.deleteArticle(param).success(function (msg) {
+                if(msg['code'] === '0000') {
+                    //删除文章后重新载入页面
+                    $scope.showWarning = false;
+                }
+                else alert(msg['errorMsg']);
+            }).error(function () {
+                alert("Network Error!");
+            });
         };
     }]);
 
@@ -315,6 +329,7 @@
     app.controller("blogview", ['$scope', '$rootScope', '$window', '$routeParams' ,'AuthData', function($scope,$rootScope,$window,$routeParams,AuthData) {
         $rootScope.onViewPage = "blog";
         $scope.user = AuthData.User;
+        $scope.showWarning = false;
         $scope.blogID = {
             aid : $routeParams.id
         };
@@ -355,12 +370,17 @@
         });
         
         //删除$scope.blogID 对应文章
-        $scope.delectBlog = function () {
-            alert($scope.blogID + " will be delect!");
-            //调用删除文章的API
+        $scope.deleteBlog = function () {
+            AuthData.deleteArticle($scope.blogID).success(function (msg) {
+                if(msg['code'] === '0000') {
+                    //删除完成后回退到 blog 页面
+                    $window.location.replace('#/views/blog');
+                }
+                else alert(msg['errorMsg']);
+            }).error(function () {
+                alert("Network Error!");
+            });
             
-            //删除完成后回退到 blog 页面
-            $window.location.replace('#/views/blog');
         };
 
     }]);

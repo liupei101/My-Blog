@@ -100,6 +100,7 @@ class CLArticle {
 	 */
 	static public function getArticleByID($aid) {
 		$sqlArticle = @mysql_query('SELECT * FROM article WHERE aid = "'.$aid.'";' );
+		$sqlUpdate = @mysql_query('UPDATE article SET views = views + 1 WHERE aid = "'.$aid.'";');
 		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
         if(@mysql_num_rows($sqlArticle) === 0) return ERROR_INPUT.'no such article!';
         if(($article = @mysql_fetch_assoc($sqlArticle)) === false) return ERROR_SYSTEM.'System error.';
@@ -136,6 +137,17 @@ class CLArticle {
 		$res = [];
 		$res['aid'] = $aid;
 		return '0000'.json_encode($res);
+	}
+	/**
+	 * delect article function
+	 *
+	 * @return string (code, data)
+	 */
+	static public function deleteArticle($aid) {
+		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
+		$sqlArticle = @mysql_query('DELETE FROM article WHERE aid = "'.$aid.'"');
+		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
+		return '0000';
 	}
 	//@next文章的增 删 改 操作
 }

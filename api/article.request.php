@@ -57,7 +57,15 @@ switch ($action[2]) {
         }
         else ERROR(substr($aid, 0, 4), substr($aid, 4));
         break;
-        
+
+    case 'delete':
+        $tmpRes = CLArticle::deleteArticle($request['aid']);
+        if(substr($tmpRes, 0, 4) === '0000') {
+        	SUCCESS(substr($tmpRes, 4));
+        }
+        else ERROR(substr($tmpRes, 0, 4), substr($tmpRes, 4));
+        break;
+
 	default:
 		# code...
 		break;
