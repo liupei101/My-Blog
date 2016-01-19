@@ -119,15 +119,23 @@ class CLArticle {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
 		$sqlArticle = @mysql_query('INSERT INTO article SET title = "'.$title.'", public = "'.$public.'", postdate = "'.$postdate.'", cateid = "'.$cateid.'", content = "'.$content.'";');
 		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
-		//查询数据库中aid字段最大值, 并返回
+		$sqlMaxAid = @mysql_query('SELECT MAX(aid) AS aid FROM article;');
+		if($sqlMaxAid === false) return ERROR_SYSTEM.'System error';
+		$maxAid = @mysql_fetch_assoc($sqlMaxAid);
+		return '0000'.json_encode($maxAid);
 	}
 	/**
 	 * update Article function
 	 * 
 	 * @return string (code, data)
 	 */
-	static public function updateArticle() {
-		
+	static public function updateArticle($aid, $title, $public, $postdate, $cateid, $content) {
+		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
+		$sqlArticle = @mysql_query('UPDATE article SET title = "'.$title.'", public = "'.$public.'", postdate = "'.$postdate.'", cateid = "'.$cateid.'", content = "'.$content.'" WHERE aid = "'.$aid.'";');
+		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
+		$res = [];
+		$res['aid'] = $aid;
+		return '0000'.json_encode($res);
 	}
 	//@next文章的增 删 改 操作
 }

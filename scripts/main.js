@@ -456,6 +456,7 @@
             if($routeParams.id === "new") {
                 AuthData.addArticle($scope.newBlog).success(function (msg) {
                     if(msg['code'] === "0000") {
+                        alert("发表成功");
                         $window.location.replace('#/views/blogview/' + msg['data']['aid']);
                         // alert("发表成功");
                     }
@@ -467,6 +468,7 @@
             else {
                 AuthData.modifyArticle($scope.newBlog).success(function (msg) {
                     if(msg['code'] === "0000") {
+                        alert("修改成功！");
                         $window.location.replace('#/views/blogview/' + msg['data']['aid']);
                         //返回新发表文章的ID  跳转至对应文章页面
                     }

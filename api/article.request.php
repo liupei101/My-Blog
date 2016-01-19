@@ -43,11 +43,21 @@ switch ($action[2]) {
         break;
 
     case 'new':
-        //新增文章
+        $aid = CLArticle::addArticle($request['title'], $request['public'], date('Y-m-d H:i:s',time()), $request['cateid'], $request['detail']);
+        if(substr($aid, 0, 4) === '0000') {
+        	SUCCESS(substr($aid, 4));
+        }
+        else ERROR(substr($aid, 0, 4), substr($aid, 4));
         break;
+
     case 'modify':
-        //修改文章
+        $aid = CLArticle::updateArticle($request['aid'], $request['title'], $request['public'], date('Y-m-d H:i:s',time()), $request['cateid'], $request['detail']);
+        if(substr($aid, 0, 4) === '0000') {
+        	SUCCESS(substr($aid, 4));
+        }
+        else ERROR(substr($aid, 0, 4), substr($aid, 4));
         break;
+        
 	default:
 		# code...
 		break;
