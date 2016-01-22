@@ -2,14 +2,14 @@
     <p class="text-center" style="padding-top:20px"><img src="{{user.imgdir}}" class="img-responsive img-thumbnail" alt="User photo" width="150px"></p>
     <h4 class="text-center"><span class="glyphicon glyphicon-home" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;{{user.name}}</h4>
     <hr style="margin: 6px 0;"><br>
-    <p class="font-p-x "><span class="glyphicon glyphicon-heart-empty" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;views :<span class="ng-binding">&nbsp;{{user.views}}</span></p>
-    <p class="font-p-x "><span class="glyphicon glyphicon-list-alt" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;posts :<span class="ng-binding">&nbsp;{{user.posts}}</span></p>
-    <p class="font-p-x "><span class="glyphicon glyphicon-time" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;visited :<span class="ng-binding">&nbsp;{{user.lastvisit}}</span></p>
-    <p class="font-p-x "><span class="glyphicon glyphicon-star-empty"  style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;motto :<span class="ng-binding feture-motto">&nbsp;{{user.motto}}</span></p>
+    <p class="font-p-x "><span class="glyphicon glyphicon-heart-empty" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;views:<span class="ng-binding">{{user.views}}</span></p>
+    <p class="font-p-x "><span class="glyphicon glyphicon-list-alt" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;posts:<span class="ng-binding">{{user.posts}}</span></p>
+    <p class="font-p-x "><span class="glyphicon glyphicon-time" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;visited:<span class="ng-binding">{{user.lastvisit}}</span></p>
+    <p class="font-p-x "><span class="glyphicon glyphicon-star-empty"  style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;motto:<span class="ng-binding feture-motto">{{user.motto}}</span></p>
     <hr>
     <p class="font-p-x"><span class="glyphicon glyphicon-chevron-right" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;category :</p>
     <p class="link-for-category" ng-repeat="cate in category">
-        <span class="glyphicon glyphicon-minus" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;<a href="#/views/category/{{cate.cid}}"> {{cate.cname}}&nbsp;&nbsp;({{cate.count}})</a>
+        <span class="glyphicon glyphicon-minus" style= "color:#1E4A5E" aria-hidden="true"></span>&nbsp;<a href="#/views/category/{{cate.cid}}">{{cate.cname}}({{cate.count}})</a>
     </p>
     <hr>
 </div>
