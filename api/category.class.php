@@ -39,27 +39,35 @@ class CLCategory {
 	/**
 	 * add new category
      * 
-	 *
+	 * @return string (code, data)
 	 */
-	public function addNewCategory() {
+	static public function addNewCategory($cateName) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
-
+		$sqlCate = @mysql_query('INSERT INTO category SET cname="'.$cateName.'";');
+		if($sqlCate === false) return ERROR_SYSTEM.'System error';
+		return '0000';
 	}
 	/**
 	 * delect category
-     *
-	 *
+     * 
+	 * @return string (code, data)
 	 */
-	public function delectCategory() {
+	static public function deleteCategory($cateID) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
+	    $sqlCate = @mysql_query('DELETE FROM category WHERE cid = "'.$cateID.'";');
+		if($sqlCate === false) return ERROR_SYSTEM.'System error';
+		return '0000';
 	}
 	/**
 	 * update category
-     *
-	 *
+     * 
+	 * @return string (code, data)
 	 */
-	public function updateCategory() {
+	static public function updateCategory($cateID, $cateName) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
+		$sqlCate = @mysql_query('UPDATE category SET cname = "'.$cateName.'" WHERE cid = "'.$cateID.'";');
+		if($sqlCate === false) return ERROR_SYSTEM.'System error';
+		return '0000';	
 	}
 }
 ?>

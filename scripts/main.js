@@ -142,7 +142,7 @@
             AuthData.userCategory(admin).success(function (msg) {
                 if(msg['code'] = "0000") {
                     AuthData.Category = msg.data;
-                    console.log(AuthData.Category);
+                    // console.log(AuthData.Category);
                     //刷新时同步显示信息
                     $rootScope.$broadcast("getData");
                 }
@@ -288,6 +288,8 @@
                 if(msg['code'] === '0000') {
                     //删除文章后重新载入页面
                     $scope.showWarning = false;
+                    getBlogList();
+                    $rootScope.fetchData();
                 }
                 else alert(msg['errorMsg']);
             }).error(function () {
@@ -538,7 +540,7 @@
         $scope.category = AuthData.Category;
         $scope.s_infoSetting = 0;
         $scope.s_cateSetting = 1;
-        $scope.newCateName = "";
+        $scope.newCateName = '';
         $scope.key = {
             password: '',
             newPassword: '',
@@ -553,25 +555,50 @@
             $scope.user = AuthData.User;
             $scope.category = AuthData.Category;
         });
-
-        //文章分类管理的 增 删 改 操作
+        //文章分类管理的 查 增 删 改 操作
+        $scope.getCategory = function() {
+            AuthData.userCategory().success(function (msg) {
+                if(msg['code'] = "0000") {
+                    AuthData.Category = msg.data;
+                    $rootScope.$broadcast('getData');
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function() {
+                alert("Network Error!");
+            });
+        };
+        
         $scope.updateCategoryName = function(selectCateID, selectCateName, status) {
             status = 0;
-            alert(selectCateID + " will be update to " + selectCateName);
-            //调用修改类别名 API
+            var param = {
+                cid : selectCateID ,
+                cname : selectCateName
+            };
+            AuthData.modifyCategory(param).success( function (msg) {
+                if(msg['code'] = "0000") {
+                    $scope.getCategory();
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function () {
+               alert("Network Error!"); 
+            });
         };
-        $scope.delectCategory = function(selectCateID) {
-            alert( selectCateID + " will be delect!");
-            //调用删除指定类别 API
-            //刷新视图
-        };
-        $scope.addCategory = function() {
-            //输入检查
-            //添加一个新的分类
-            //得到更新后的视图
-            AuthData.addCategory($scope.newCateName).success(function (msg) {
-                if(msg['code'] == "0000") {
 
+        $scope.delectCategory = function(selectCateID, selectCateCount) {
+            if(selectCateCount !== '0') {
+                alert("该类别下有文章，无法删除！");
+                return ;
+            }
+            var param = {
+                cid : selectCateID
+            };
+            AuthData.deleteCategory(param).success(function (msg) {
+                if(msg['code'] == "0000") {
+                    $scope.getCategory();
                 }
                 else {
                     alert(msg['errorMsg']);
@@ -579,7 +606,28 @@
             }).error(function () {
                 alert("Network Error!");
             });
-            alert("添加成功！");
+        };
+
+        $scope.addCategory = function() {
+            if($scope.newCateName === "") {
+                alert("请输入类别名！");
+                return ;
+            }
+            var param = {
+                cname: $scope.newCateName
+            };
+            // console.log(param);
+            AuthData.addCategory(param).success(function (msg) {
+                if(msg['code'] == "0000") {
+                    $scope.getCategory();
+                }
+                else {
+                    alert(msg['errorMsg']);
+                }
+            }).error(function () {
+                alert("Network Error!");
+            });
+            $scope.newCateName = "";
         };
 
         //修改密码及个人信息操作
