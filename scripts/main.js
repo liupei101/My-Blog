@@ -512,9 +512,10 @@
         $scope.imgUrl = "images/pic/2333.jpg";
         $scope.finished = 0;
         $scope.showHelps = 0;
-        $scope.pic = "";
+        $scope.myFile = "";
         $scope.uploadImg = function () {
             alert("正在上传");
+            console.log($scope.myFile);
             $scope.finished = 1;
         };
         $scope.close = function() {
@@ -522,15 +523,18 @@
         };
     }]);
 
-    app.controller("usercourse", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
+    app.controller("usercourse", ['$scope', '$rootScope', '$modal', 'AuthData', function($scope,$rootScope,$modal,AuthData) {
         $rootScope.onViewPage = "course";
         $scope.photoSrc = './images/pic/bg.jpg';
         $scope.login = $rootScope.Login;
         $scope.$watch("Login", function() {
             $scope.login = $rootScope.Login;
         });
-        $scope.uplaodPhoto = function(){
-            alert('上传图片成功!');
+        $scope.uploadPhoto = function() {
+            $modal.open({
+                templateUrl: '/views/uploadimg.html',
+                controller: 'uploadimg'
+            });
         };
     }]);
 

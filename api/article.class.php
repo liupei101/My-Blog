@@ -40,10 +40,10 @@ class CLArticle {
 	 */
 	static public function getArticleByDefault() {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) {
-			$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article WHERE public = "1";' );
+			$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article WHERE public = "1" ORDER BY postdate DESC;' );
 		}
 		else {
-    		$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article;' );
+    		$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article ORDER BY postdate DESC;' );
 		}
 		$res = [];
 		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
@@ -59,10 +59,10 @@ class CLArticle {
 	 */
 	static public function getArticleByCateid($cateID) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) {
-			$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article WHERE cateid = "'.$cateID.'" AND public = "1";' );
+			$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article WHERE cateid = "'.$cateID.'" AND public = "1" ORDER BY postdate DESC;' );
 		}
 		else {
-			$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article WHERE cateid = "'.$cateID.'";' );
+			$sqlArticle = @mysql_query('SELECT aid, title, content, views, public, postdate FROM article WHERE cateid = "'.$cateID.'" ORDER BY postdate DESC;' );
 		}
 		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
         if(@mysql_num_rows($sqlArticle) === 0) return ERROR_INPUT.'No such article!';
@@ -80,10 +80,10 @@ class CLArticle {
 	 */
 	static public function getArticleShortByCateid($cateID) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) {
-			$sqlArticle = @mysql_query('SELECT aid, title, public FROM article WHERE cateid = "'.$cateID.'" AND public = "1";' );
+			$sqlArticle = @mysql_query('SELECT aid, title, public FROM article WHERE cateid = "'.$cateID.'" AND public = "1" ORDER BY postdate DESC;' );
 		}
 		else {
-			$sqlArticle = @mysql_query('SELECT aid, title, public FROM article WHERE cateid = "'.$cateID.'";' );
+			$sqlArticle = @mysql_query('SELECT aid, title, public FROM article WHERE cateid = "'.$cateID.'" ORDER BY postdate DESC;' );
 		}
 		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
         if(@mysql_num_rows($sqlArticle) === 0) return ERROR_INPUT.'No such article!';
