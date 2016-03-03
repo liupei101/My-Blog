@@ -51,7 +51,7 @@ switch ($action[2]) {
         break;
 
     case 'modify':
-        $aid = CLArticle::updateArticle($request['aid'], $request['title'], $request['public'], date('Y-m-d H:i:s',time()), $request['cateid'], $request['detail']);
+        $aid = CLArticle::updateArticle($request['aid'], $request['title'], $request['public'], $request['cateid'], $request['detail']);
         if(substr($aid, 0, 4) === '0000') {
         	SUCCESS(substr($aid, 4));
         }

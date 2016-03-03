@@ -118,7 +118,7 @@ class CLArticle {
 	 */
 	static public function addArticle($title, $public, $postdate, $cateid, $content) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
-		$sqlArticle = @mysql_query('INSERT INTO article SET title = "'.$title.'", public = "'.$public.'", postdate = "'.$postdate.'", cateid = "'.$cateid.'", content = "'.$content.'";');
+		$sqlArticle = @mysql_query("INSERT INTO article SET title = '".$title."', public = '".$public."', postdate = '".$postdate."', cateid = '".$cateid."', content = '".$content."';");
 		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
 		$sqlMaxAid = @mysql_query('SELECT MAX(aid) AS aid FROM article;');
 		if($sqlMaxAid === false) return ERROR_SYSTEM.'System error';
@@ -130,10 +130,13 @@ class CLArticle {
 	 * 
 	 * @return string (code, data)
 	 */
-	static public function updateArticle($aid, $title, $public, $postdate, $cateid, $content) {
+	static public function updateArticle($aid, $title, $public, $cateid, $content) {
 		if(!isset($_SESSION['login']) || !$_SESSION['login']) return ERROR_PERMIT."No permission!";
-		$sqlArticle = @mysql_query('UPDATE article SET title = "'.$title.'", public = "'.$public.'", postdate = "'.$postdate.'", cateid = "'.$cateid.'", content = "'.$content.'" WHERE aid = "'.$aid.'";');
-		if($sqlArticle === false) return ERROR_SYSTEM.'System error';
+		$sqlArticle = @mysql_query("UPDATE article SET title = '".$title."', public = '".$public."', cateid = '".$cateid."', content = '".$content."' WHERE aid = '".$aid."' ;");
+		if($sqlArticle === false) {
+			echo mysql_error();
+			return ERROR_SYSTEM.'System error';
+		}
 		$res = [];
 		$res['aid'] = $aid;
 		return '0000'.json_encode($res);

@@ -118,7 +118,7 @@
         };
     });
 
-    app.run(['$rootScope', '$window', 'AuthData', function($rootScope,$window,AuthData) {
+    app.run(['$rootScope', '$window', '$http', 'AuthData', function($rootScope,$window,$http,AuthData) {
         $rootScope.DEBUG = '1';
         $rootScope.Login = 0 ;
         $rootScope.onViewPage = "home";
@@ -167,9 +167,20 @@
             });
         };
         $rootScope.fetchData();
-        // $window.location.replace('/#/');
-        //@ 刷新时需要fetchData
 
+        /*var myUrl = "http://contests.acmicpc.info/contests.json?callback=JSON_CALLBACK";
+        var url = "http://public-api.wordpress.com/rest/v1/sites/wtmpeachtest.wordpress.com/posts?callback=JSON_CALLBACK";
+
+        $http.jsonp(url).success(function (data){
+            console.log(data);
+        });
+
+        $http.jsonp(myUrl).success(function (data){
+        　　alert(data);
+        }).error(function () {
+            alert("Request Error!");
+        });*/
+        
     }]);
     
     app.controller("usernavinfo", ['$scope', '$rootScope', 'AuthData', function($scope,$rootScope,AuthData) {
@@ -525,7 +536,7 @@
 
     app.controller("usercourse", ['$scope', '$rootScope', '$modal', 'AuthData', function($scope,$rootScope,$modal,AuthData) {
         $rootScope.onViewPage = "course";
-        $scope.photoSrc = './images/pic/bg.jpg';
+        $scope.photoSrc = './images/temp/course.png';
         $scope.login = $rootScope.Login;
         $scope.$watch("Login", function() {
             $scope.login = $rootScope.Login;
